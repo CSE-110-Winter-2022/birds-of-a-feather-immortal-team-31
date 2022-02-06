@@ -20,6 +20,7 @@ public class ClassHistory extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        db = AppDatabase.singleton(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_history);
     }
@@ -33,14 +34,9 @@ public class ClassHistory extends AppCompatActivity {
         String subjectAndNumber = subjectView.getText().toString() + numberView.getText().toString();
         String quarter = quarterView.getText().toString();
         int year = Integer.parseInt(yearView.getText().toString());
-        Log.d(TAG, "subject: " + subjectAndNumber);
-        Log.d(TAG, "quarter: " +quarter);
-        Log.d(TAG, "year: " + String.valueOf(year));
-        Course newCourse = new Course(year, quarter, subjectAndNumber);
-        Log.d(TAG, "courseYear: "+ newCourse.getYear()+ "subject :" + newCourse.getSubjectAndNumber() + "quarter: " + newCourse.getQuarter());
 
+        Course newCourse = new Course(year, quarter, subjectAndNumber);
 
         db.coursesDao().insert(newCourse);
     }
-
 }
