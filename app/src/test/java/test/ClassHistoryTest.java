@@ -1,4 +1,4 @@
-package com.example.project;
+package test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,20 +8,29 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.example.project.MainActivity;
 
 import junit.framework.TestCase;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class UserStory2Test extends AppCompatActivity {
+public class ClassHistoryTest extends AppCompatActivity {
+    /*
     @Test
     public void dummyTest()
     {
         assertEquals(1+1,2);
     }
+*/
+    @Rule
+    public ActivityScenarioRule<MainActivity> activityScenarioRule
+            = new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
     public void MainActivityTest() {
