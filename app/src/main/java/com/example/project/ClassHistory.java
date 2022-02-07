@@ -39,4 +39,17 @@ public class ClassHistory extends AppCompatActivity {
 
         db.coursesDao().insert(newCourse);
     }
+    public void saveProfile(){
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        TextView yearView = findViewById(R.id.editTextYear);
+        TextView quarterView = findViewById(R.id.editTextQuarter);
+        TextView subjectView = findViewById(R.id.editTextSubject);
+        TextView numberView = findViewById(R.id.editTextNumber);
+        editor.putString("year",yearView.getText().toString());
+        editor.putString("quarter",quarterView.getText().toString());
+        editor.putString("subject",subjectView.getText().toString());
+        editor.putString("number",numberView.getText().toString());
+        editor.apply();
+    }
 }
