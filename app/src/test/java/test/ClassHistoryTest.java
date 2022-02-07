@@ -33,11 +33,11 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class ClassHistoryTest extends AppCompatActivity {
-    @Test
+    /*@Test
     public void dummyTest()
     {
         assertEquals(1+1,2);
-    }
+    }*/
 
     @Rule
     public ActivityScenarioRule<ClassHistory> activityScenarioRule
