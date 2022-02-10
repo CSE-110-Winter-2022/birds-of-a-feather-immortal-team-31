@@ -26,4 +26,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ClassHistory.class);
         startActivity(intent);
     }
+
+    public void onViewMutualCoursesClicked(View view){
+        Intent intent = new Intent(this, PersonDetailActivity.class);
+        startActivity(intent);
+    }
 }
