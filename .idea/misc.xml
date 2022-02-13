@@ -3,13 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Crick/AndroidStudioProjects/birds-of-a-feather-immortal-team-31verson3/app/src/main/res/layout/activity_class_history.xml" value="0.5" />
+        <entry key="..\:/Users/Crick/AndroidStudioProjects/birds-of-a-feather-immortal-team-31verson3/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Hushie Whisper/AndroidStudioProjects/birds-of-a-feather-immortal-team-31/app/src/main/res/layout/activity_class_history.xml" value="0.13405797101449277" />
+        <entry key="..\:/Users/Hushie Whisper/AndroidStudioProjects/birds-of-a-feather-immortal-team-31/app/src/main/res/layout/activity_main.xml" value="0.13405797101449277" />
+        <entry key="..\:/Users/Hushie Whisper/AndroidStudioProjects/birds-of-a-feather-immortal-team-31/app/src/main/res/layout/activity_person_detail.xml" value="0.1" />
+        <entry key="..\:/Users/Hushie Whisper/AndroidStudioProjects/birds-of-a-feather-immortal-team-31/app/src/main/res/layout/activity_search_for_classmates.xml" value="0.1" />
+        <entry key="..\:/Users/Hushie Whisper/AndroidStudioProjects/birds-of-a-feather-immortal-team-31/app/src/main/res/layout/layout_person_detail_row.xml" value="0.13405797101449277" />
+        <entry key="..\:/Users/Hushie Whisper/AndroidStudioProjects/birds-of-a-feather-immortal-team-31/app/src/main/res/layout/layout_person_detail_row_year.xml" value="0.13405797101449277" />
+        <entry key="..\:/Users/Hushie Whisper/AndroidStudioProjects/birds-of-a-feather-immortal-team-31/app/src/main/res/layout/layout_search_for_classmates_row.xml" value="0.13405797101449277" />
+        <entry key="..\:/Users/Hushie Whisper/AndroidStudioProjects/birds-of-a-feather-immortal-team-31/app/src/main/res/layout/layout_searchforclassmates.xml" value="0.13405797101449277" />
         <entry key="..\:/Users/bjarki/AndroidStudioProjects/Project/app/src/main/res/layout/activity_class_history.xml" value="0.1" />
         <entry key="..\:/Users/bjarki/AndroidStudioProjects/Project/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Users/bjarki/AndroidStudioProjects/Project/app/src/main/res/layout/activity_person_detail.xml" value="0.2" />
-        <entry key="..\:/Users/bjarki/AndroidStudioProjects/Project/app/src/main/res/layout/layout_course_detail.xml" value="0.536" />
-        <entry key="..\:/Users/bjarki/AndroidStudioProjects/Project/app/src/main/res/layout/layout_person_detail.xml" value="0.2" />
-        <entry key="..\:/Users/bjarki/AndroidStudioProjects/Project/app/src/main/res/layout/layout_person_detail_row.xml" value="0.536" />
-        <entry key="..\:/Users/bjarki/AndroidStudioProjects/Project/app/src/main/res/layout/layout_person_detail_row_year.xml" value="0.259375" />
       </map>
     </option>
   </component>

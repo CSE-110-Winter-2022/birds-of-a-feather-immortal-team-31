@@ -1,10 +1,10 @@
 package com.example.project;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
@@ -29,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onViewMutualCoursesClicked(View view){
         Intent intent = new Intent(this, PersonDetailActivity.class);
+        startActivity(intent);
+    }
+
+    public void onSearchForClassmatesClicked(View view) {
+        Intent intent = new Intent(this, SearchForClassmates.class);
         startActivity(intent);
     }
 }

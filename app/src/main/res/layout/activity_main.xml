@@ -16,16 +16,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_mutual_classes_button"
-        app:layout_constraintVertical_bias="0.773" />
+        app:layout_constraintVertical_bias="0.579" />
 
     <Button
         android:id="@+id/view_mutual_classes_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="288dp"
+        android:layout_marginTop="220dp"
         android:onClick="onViewMutualCoursesClicked"
         android:text="View mutual classes"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/Search_for_classmates"
+        android:layout_width="218dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="284dp"
+        android:onClick="onSearchForClassmatesClicked"
+        android:text="Search for classmates"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
