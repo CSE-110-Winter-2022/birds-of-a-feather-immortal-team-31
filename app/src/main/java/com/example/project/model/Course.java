@@ -63,6 +63,6 @@ public class Course {
     }
 
     public String courseToString(){
-        return subjectAndNumber + "%" + quarter + "^" + String.valueOf(year) + "%";
+        return subjectAndNumber + "%" + quarter + "^" + String.valueOf(year) + "~";
     }
 }
