@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
@@ -15,9 +16,13 @@ import android.widget.TextView;
 import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
 
+import java.util.List;
+
 public class ClassHistory extends AppCompatActivity {
 
+
     private AppDatabase db;
+    private AppDatabase passdb;
 
 
     @Override
@@ -74,5 +79,25 @@ public class ClassHistory extends AppCompatActivity {
         editor.putString("subject",subjectView.getText().toString());
         editor.putString("number",numberView.getText().toString());
         editor.apply();
+    }
+
+    public void onSearchButtonClicked(View view){
+        List<Course> courses = db.coursesDao().getAll();
+        List<Course> passCourses = passdb.coursesDao().getAll();
+        String studentName = null;
+
+        for (Course i : courses)
+        {
+            for(Course j : passCourses)
+            {
+                if (i.equals(j))
+                {
+                    /*TextView textView = findViewById(R.id.PersonDetailName);
+                    textView.setText(studentName);*/
+                    startActivity(new Intent(this, PersonDetailActivity.class));
+                }
+            }
+        }
+
     }
 }
