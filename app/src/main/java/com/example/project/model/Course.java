@@ -61,4 +61,8 @@ public class Course {
     public int hashCode() {
         return Objects.hash(id, year, quarter, subjectAndNumber);
     }
+
+    public String courseToString(){
+        return subjectAndNumber + "%" + quarter + "^" + String.valueOf(year) + "%";
+    }
 }
