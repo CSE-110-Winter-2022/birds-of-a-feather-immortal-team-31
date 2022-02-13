@@ -10,6 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
+            android:name=".SignInActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.sign-in_KEY"
+            android:value="AIzaSyAR69RyKa8q8rm6hEMzHK2TDG5FJhOqQDg" />
+
+        <activity
             android:name=".PersonDetailActivity"
             android:exported="false" />
         <activity
