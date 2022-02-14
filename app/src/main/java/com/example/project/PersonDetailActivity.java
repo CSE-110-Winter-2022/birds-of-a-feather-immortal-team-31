@@ -1,11 +1,12 @@
 package com.example.project;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.View;
 
 import com.example.project.model.Course;
 
@@ -29,6 +30,12 @@ public class PersonDetailActivity extends AppCompatActivity {
 
         data.add(demo1);
         data.add(demo2);
+
+        Intent intent = new Intent(this, PersonDetailActivity.class);
+        String name = intent.getStringExtra("user_name");
+        String url = intent.getStringExtra("user_photoURL");
+        //Course[] courses = (Course[]) intent.getParcelableArrayExtra("user_courses");
+
 
         coursesRecyclerView = findViewById(R.id.courses_view);
 

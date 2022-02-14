@@ -1,15 +1,18 @@
 package com.example.project;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.example.project.model.User;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
@@ -19,11 +22,42 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    List<User> fellowUsers = new ArrayList<User>();
+
+    protected RecyclerView usersRecyclerView;
+    protected RecyclerView.LayoutManager usersLayoutManager;
+    protected UsersViewAdapter userViewAdapter;
+
+
+    protected List<Course> courses = new ArrayList<Course>();
+    protected Course demo1 = new Course(2077, "Spring", "CSE110");
+    protected Course demo2 = new Course(2019, "Winter", "CSE101");
+
+    protected User user1 = new User("Luffy","ssdssd",courses);
+    protected User user2 = new User("Zoro","fdfdf",courses);
+
+    public MessageListener messageListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        courses.add(demo1);
+        courses.add(demo2);
+        fellowUsers.add(user1);
+        fellowUsers.add(user2);
+
+        usersRecyclerView = findViewById(R.id.users_view);
+
+        usersLayoutManager = new LinearLayoutManager(this);
+        usersRecyclerView.setLayoutManager(usersLayoutManager);
+
+        userViewAdapter = new UsersViewAdapter(fellowUsers);
+        usersRecyclerView.setAdapter(userViewAdapter);
+
+        usersRecyclerView.setVisibility(View.INVISIBLE);
+
 
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
         List<Course> myCourses = db.coursesDao().getAll();
@@ -36,13 +70,12 @@ public class MainActivity extends AppCompatActivity {
             messageString += c.courseToString() + ",";
         }
 
-        List<FellowStudent> fellowStudents = new ArrayList<FellowStudent>();
 
 
         Message databaseMessage = new Message(messageString.getBytes());
         Nearby.getMessagesClient(this).publish(databaseMessage);
 
-        MessageListener messageListener = new MessageListener() {
+        this.messageListener = new MessageListener() {
             @Override
             public void onFound(@NonNull Message message) {
                 String sMessage = new String(message.getContent());
@@ -96,12 +129,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (!fellowStudentMutualCourse.isEmpty()) {
-                        FellowStudent fellowStudent = new FellowStudent(fellowStudentName, fellowStudentPhotoURL, fellowStudentMutualCourse);
-                        fellowStudents.add(fellowStudent);
+                        User user = new User(fellowStudentName, fellowStudentPhotoURL, fellowStudentMutualCourse);
+                        fellowUsers.add(user);
                     }
                 }
             }
         };
+
 
         Nearby.getMessagesClient(this).subscribe(messageListener);
     }
@@ -114,5 +148,20 @@ public class MainActivity extends AppCompatActivity {
     public void onViewMutualCoursesClicked(View view){
         Intent intent = new Intent(this, PersonDetailActivity.class);
         startActivity(intent);
+    }
+
+    public void onSearchForClassmatesClicked(View view){
+
+        TextView textView = findViewById(R.id.Search_for_classmates);
+        String text = textView.getText().toString();
+
+        if(text.equals("Start")){
+            usersRecyclerView.setVisibility(View.VISIBLE);
+            textView.setText("Stop");
+        }
+        else if (text.equals("Stop")){
+            Nearby.getMessagesClient(this).unsubscribe(this.messageListener);
+            textView.setText("Start");
+        }
     }
 }

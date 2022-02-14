@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -30,23 +31,23 @@ public class SearchForClassmates extends AppCompatActivity {
     protected User user2 = new User("Zoro","",courses);
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_for_classmates);
 
-        courses.add(demo1);
-        courses.add(demo2);
+        Intent intent = new Intent(this, MainActivity.class);
+        List<User> students = (List<User>) intent.getSerializableExtra("student");
 
-        users.add(user1);
-        users.add(user2);
+        students.add(new User("1", "URL", courses));
 
         usersRecyclerView = findViewById(R.id.users_view);
 
         usersLayoutManager = new LinearLayoutManager(this);
         usersRecyclerView.setLayoutManager(usersLayoutManager);
 
-        userViewAdapter = new UsersViewAdapter(users);
+        userViewAdapter = new UsersViewAdapter(students);
         usersRecyclerView.setAdapter(userViewAdapter);
     }
 

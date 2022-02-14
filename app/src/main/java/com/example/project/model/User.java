@@ -38,7 +38,7 @@ public class User {
 
     public String getName(){return this.name;}
 
-    String photoURL(){return this.photoURL;}
+    public String getPhotoURL(){return this.photoURL;}
 
-    List<Course> getCourses(){return this.courses;}
+    public List<Course> getCourses(){return this.courses;}
 }
