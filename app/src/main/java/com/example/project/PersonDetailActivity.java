@@ -1,7 +1,5 @@
 package com.example.project;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.model.Course;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +41,13 @@ public class PersonDetailActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.imageView);
 
-        Bitmap bmp = null;
+        /*Bitmap bmp = null;
         try {
             bmp = BitmapFactory.decodeFile(String.valueOf(new java.net.URL(url).openStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        imageView.setImageBitmap(bmp);
+        imageView.setImageBitmap(bmp);*/
 
 
 
