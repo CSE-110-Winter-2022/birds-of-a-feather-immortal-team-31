@@ -1,6 +1,5 @@
 package com.example.project;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -36,10 +35,9 @@ public class PersonDetailActivity extends AppCompatActivity {
         data.add(demo1);
         data.add(demo2);
 
-        Intent intent = new Intent(this, PersonDetailActivity.class);
-        String name = intent.getStringExtra("user_name");
-        String url = intent.getStringExtra("user_photoURL");
-        List<Course> courses = (List<Course>) intent.getSerializableExtra("user_courses");
+        String name = getIntent().getStringExtra("user_name");
+        String url = getIntent().getStringExtra("user_photoURL");
+        List<Course> courses = (List<Course>) getIntent().getSerializableExtra("user_courses");
 
         TextView PersonDetailName = findViewById(R.id.PersonDetailName);
         PersonDetailName.setText(name);
