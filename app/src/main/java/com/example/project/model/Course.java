@@ -55,7 +55,7 @@ public class Course implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return id == course.id && year == course.year && quarter.equals(course.quarter) && subjectAndNumber.equals(course.subjectAndNumber);
+        return year == course.year && quarter.equals(course.quarter) && subjectAndNumber.equals(course.subjectAndNumber);
     }
 
     @Override
