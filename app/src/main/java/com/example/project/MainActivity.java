@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     protected Course demo1 = new Course(2077, "Spring", "CSE110");
     protected Course demo2 = new Course(2019, "Winter", "CSE101");
 
-    protected User user1 = new User("Luffy","ssdssd",courses);
-    protected User user2 = new User("Zoro","fdfdf",courses);
+    protected User user1 = new User("Luffy","",courses);
+    protected User user2 = new User("Zoro","",courses);
 
     public MessageListener messageListener;
 
@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        courses.add(demo1);
-        courses.add(demo2);
+        this.user1.getCourses().add(demo1);
+        this.user2.getCourses().add(demo2);
+
         fellowUsers.add(user1);
         fellowUsers.add(user2);
 

@@ -1,8 +1,12 @@
 package com.example.project;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.model.Course;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +39,21 @@ public class PersonDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PersonDetailActivity.class);
         String name = intent.getStringExtra("user_name");
         String url = intent.getStringExtra("user_photoURL");
-        //Course[] courses = (Course[]) intent.getParcelableArrayExtra("user_courses");
+        List<Course> courses = (List<Course>) intent.getSerializableExtra("user_courses");
+
+        TextView PersonDetailName = findViewById(R.id.PersonDetailName);
+        PersonDetailName.setText(name);
+
+        ImageView imageView = findViewById(R.id.imageView);
+
+        Bitmap bmp = null;
+        try {
+            bmp = BitmapFactory.decodeFile(String.valueOf(new java.net.URL(url).openStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        imageView.setImageBitmap(bmp);
+
 
 
         coursesRecyclerView = findViewById(R.id.courses_view);
@@ -42,7 +61,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         coursesLayoutManager = new LinearLayoutManager(this);
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
-        courseViewAdapter = new CourseViewAdapter(data);
+        courseViewAdapter = new CourseViewAdapter(courses);
         coursesRecyclerView.setAdapter(courseViewAdapter);
     }
 

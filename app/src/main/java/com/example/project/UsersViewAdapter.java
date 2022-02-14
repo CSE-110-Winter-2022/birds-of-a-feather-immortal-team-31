@@ -10,9 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.project.model.Course;
 import com.example.project.model.User;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.ViewHolder>{
@@ -68,9 +68,7 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
             Intent intent = new Intent(context, PersonDetailActivity.class);
             intent.putExtra("user_name", this.user.getName());
             intent.putExtra("user_photoURL", this.user.getPhotoURL());
-            Course[] temp = new Course[user.getCourses().size()];
-            temp = user.getCourses().toArray(temp);
-            intent.putExtra("user_courses", temp);
+            intent.putExtra("user_courses", (Serializable) this.user.getCourses());
             context.startActivity(intent);
         }
     }
