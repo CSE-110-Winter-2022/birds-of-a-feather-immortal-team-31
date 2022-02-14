@@ -5,8 +5,15 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 @Entity (tableName = "courses")
-public class Course {
+public class Course implements Serializable {
+
+    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    public int id;
 
     @NonNull
     @ColumnInfo(name = "year")
@@ -16,7 +23,7 @@ public class Course {
     @ColumnInfo(name = "quarter")
     public String quarter;
 
-    @PrimaryKey
+
     @NonNull
     @ColumnInfo(name = "course")
     public String subjectAndNumber;
@@ -37,5 +44,26 @@ public class Course {
 
     public String getSubjectAndNumber(){
         return subjectAndNumber;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id == course.id && year == course.year && quarter.equals(course.quarter) && subjectAndNumber.equals(course.subjectAndNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, year, quarter, subjectAndNumber);
+    }
+
+    public String courseToString(){
+        return subjectAndNumber + "%" + quarter + "^" + String.valueOf(year) + "~";
     }
 }
