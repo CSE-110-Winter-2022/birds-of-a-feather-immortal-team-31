@@ -18,4 +18,6 @@ public class FellowStudent {
     public List<Course> getCourses() {
         return courses;
     }
+
+
 }

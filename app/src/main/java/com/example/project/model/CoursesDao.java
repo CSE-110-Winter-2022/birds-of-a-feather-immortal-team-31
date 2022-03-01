@@ -16,4 +16,12 @@ public interface CoursesDao {
     @Transaction
     @Query("SELECT * FROM courses")
     List<Course> getAll();
+
+    @Transaction
+    @Query("SELECT MAX(year) FROM courses")
+    int getMaxYear();
+
+    @Transaction
+    @Query("SELECT * FROM courses WHERE year is (SELECT MAX(year) FROM courses)")
+    List<Course> getCoursesFromMaxYear();
 }

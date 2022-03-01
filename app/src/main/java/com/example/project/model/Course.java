@@ -66,4 +66,18 @@ public class Course implements Serializable {
     public String courseToString(){
         return subjectAndNumber + "%" + quarter + "^" + String.valueOf(year) + "~";
     }
+
+    public int quarterToNum(){
+        switch (quarter){
+            case "fall":
+                return 3;
+            case "summer":
+                return 2;
+            case "spring":
+                return 1;
+            case "winter":
+                return 0;
+        }
+        return -1;
+    }
 }
