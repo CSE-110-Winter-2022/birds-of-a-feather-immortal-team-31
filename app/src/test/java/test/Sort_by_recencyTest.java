@@ -1,5 +1,4 @@
 package test;
-
 import static org.junit.Assert.assertEquals;
 
 import android.view.View;
@@ -45,7 +44,7 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
 
 
         Course demo1 = new Course(2020, "spring", "CSE110", "tiny");
-        Course demo2 = new Course(2077, "winter", "CSE101", "medium");
+        Course demo2 = new Course(2021, "winter", "CSE101", "medium");
         Course demo3 = new Course(2020, "fall", "CSE2", "small");
 
         User user1 = new User("Luffy","",new ArrayList<Course>(), 17);
@@ -54,6 +53,8 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
 
 
         user1.getCourses().add(demo1);
+        user1.getCourses().add(demo2);
+        user1.getCourses().add(demo3);
         user2.getCourses().add(demo2);
         user3.getCourses().add(demo3);
 
@@ -109,6 +110,14 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
             case "Recency":
                 Collections.sort(fellowUsers, new SortByRecencyComparator());
         }
+    }
+
+    @Test
+    public void test(){
+        SortByRecencyComparator k = new SortByRecencyComparator();
+        int a=k.RecencyHelper(fellowUsers.get(0).getCourses());
+        assertEquals(a,4);
+
     }
 
     @Override
