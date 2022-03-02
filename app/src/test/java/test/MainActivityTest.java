@@ -1,12 +1,15 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.annotation.ContentView;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +33,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 
 //Implement AdapterView to get the spinner, the object for dropdown menu
-public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
+public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
     protected RecyclerView usersRecyclerView;
     protected RecyclerView.LayoutManager usersLayoutManager;
@@ -82,7 +85,7 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
             userViewAdapter = new UsersViewAdapter(activity.getFellowUsers());
             usersRecyclerView.setAdapter(userViewAdapter);
 
-            //TODO: perform click on recency in the dropdown menu
+
             Spinner spinner = activity.findViewById(R.id.spinner);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getApplicationContext(),
                     R.array.font_sizes, android.R.layout.simple_spinner_item);
@@ -90,9 +93,36 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
+            //spinner.performClick();
+
+            spinner.setSelection(adapter.getPosition("Recency"));
+            int count = usersRecyclerView.getChildCount();
+
+            /*
+            onView(withId(R.id.spinner)).perform(click());
+            onData(allOf(is(instanceOf(String.class)), is("Recency"))).perform(click());
+            onView(withId(R.id.spinner)).check(matches(withSpinnerText(containsString("Recency"))));
+
+             */
+            SortByRecencyComparator recencyComparator = new SortByRecencyComparator();
+            for (int i = 0; i < count; i++) {
+                String user1Name = usersRecyclerView.getChildAt(i).toString();
+                String user2Name = usersRecyclerView.getChildAt(i+1).toString();
+
+                User user1 = null;
+                User user2 = null;
+
+                for(User u : fellowUsers){
+                    if(u.getName() == user1Name) user1 = u;
+                    if(u.getName() == user2Name) user2 = u;
+                }
+                assertTrue(recencyComparator.compare(user1, user2) == 1 | recencyComparator.compare(user1, user2) ==0 );
+            }
         });
-        assertEquals(1, 1);
-        assertEquals(fellowUsers.get(0).getName(), "Luffy");
+
+
+        //assertEquals(1, 1);
+        //assertEquals(fellowUsers.get(0).getName(), "Luffy");
     }
 
     // implementation of AdapterView

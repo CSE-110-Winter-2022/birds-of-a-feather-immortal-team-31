@@ -275,29 +275,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private boolean isUserSignedIn;
 
-    public List<User> compare(){
-
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        List<Course> myCourses = db.coursesDao().getAll();
-
-        List<User> commonCourseUser = new ArrayList<User>();
-
-        for(User fellowUser: this.fellowUsers){
-            for(Course course: fellowUser.getCourses()){
-                for(Course myCourse: myCourses){
-                    if(course.equals(myCourse) && !commonCourseUser.contains(fellowUser)){
-                        commonCourseUser.add(fellowUser);
-                    }
-                }
-            }
-        }
-
-
-        return commonCourseUser;
-    }
-
-
-
     public void onSearchForClassmatesClicked(View view){
 
         TextView textView = findViewById(R.id.Search_for_classmates);
