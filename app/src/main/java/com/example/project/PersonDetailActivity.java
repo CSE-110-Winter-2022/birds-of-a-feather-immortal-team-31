@@ -20,8 +20,8 @@ public class PersonDetailActivity extends AppCompatActivity {
     protected CourseViewAdapter courseViewAdapter;
 
     protected List<Course> data = new ArrayList<Course>();
-    protected Course demo1 = new Course(2018, "Fall", "CSE110");
-    protected Course demo2 = new Course(2019, "Winter", "CSE101");
+    protected Course demo1 = new Course(2018, "Fall", "CSE110", "tiny");
+    protected Course demo2 = new Course(2019, "Winter", "CSE101", "medium");
 
 
 

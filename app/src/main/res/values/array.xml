@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="font_sizes">
-        <item>Recency</item>
-        <item>Size</item>
+        <item>recent</item>
+        <item>small classes</item>
     </string-array>
 
 </resources>

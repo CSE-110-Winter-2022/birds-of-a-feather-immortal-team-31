@@ -44,9 +44,9 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
 
 
 
-        Course demo1 = new Course(2020, "spring", "CSE110");
-        Course demo2 = new Course(2077, "winter", "CSE101");
-        Course demo3 = new Course(2020, "fall", "CSE2");
+        Course demo1 = new Course(2020, "spring", "CSE110", "tiny");
+        Course demo2 = new Course(2077, "winter", "CSE101", "medium");
+        Course demo3 = new Course(2020, "fall", "CSE2", "small");
 
         User user1 = new User("Luffy","",new ArrayList<Course>(), 17);
         User user2 = new User("Zoro","",new ArrayList<Course>(), 20);
@@ -89,7 +89,11 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-
+            /*onView(withId(R.id.editText_search))
+                    .perform(typeTextIntoFocusedView("x"), showDropDown())
+            onView(withText("xyz"))
+                    .inRoot(RootMatchers.isPlatformPopup())
+                    .check(matches(isDisplayed()))*/
         });
         assertEquals(1, 1);
         assertEquals(fellowUsers.get(0).getName(), "Luffy");

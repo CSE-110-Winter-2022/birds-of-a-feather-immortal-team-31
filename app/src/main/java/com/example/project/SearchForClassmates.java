@@ -23,8 +23,8 @@ public class SearchForClassmates extends AppCompatActivity {
 
 
     protected List<Course> courses = new ArrayList<Course>();
-    protected Course demo1 = new Course(2018, "Fall", "CSE110");
-    protected Course demo2 = new Course(2019, "Winter", "CSE101");
+    protected Course demo1 = new Course(2018, "Fall", "CSE110", "tiny");
+    protected Course demo2 = new Course(2019, "Winter", "CSE101", "medium");
 
     protected List<User> users = new ArrayList<User>();
     protected User user1 = new User("Luffy","",courses, 17);
