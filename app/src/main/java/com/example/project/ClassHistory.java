@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
 
+import java.util.Locale;
+
 public class ClassHistory extends AppCompatActivity {
 
     private AppDatabase db;
@@ -34,8 +36,8 @@ public class ClassHistory extends AppCompatActivity {
             TextView subjectView = findViewById(R.id.editTextSubject);
             TextView numberView = findViewById(R.id.editTextNumber);
 
-            String subjectAndNumber = subjectView.getText().toString() + numberView.getText().toString();
-            String quarter = quarterView.getText().toString();
+            String subjectAndNumber = subjectView.getText().toString().toLowerCase(Locale.ROOT) + numberView.getText().toString();
+            String quarter = quarterView.getText().toString().toLowerCase(Locale.ROOT);
             int year = Integer.parseInt(yearView.getText().toString());
 
             Course newCourse = new Course(year, quarter, subjectAndNumber);

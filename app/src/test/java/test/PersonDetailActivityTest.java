@@ -1,5 +1,6 @@
 package test;
 
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
@@ -52,10 +53,12 @@ public class PersonDetailActivityTest {
             courseViewAdapter = new CourseViewAdapter(data);
             coursesRecyclerView.setAdapter(courseViewAdapter);
 
-            String courses_view = ((TextView) coursesRecyclerView.findViewHolderForAdapterPosition(0).itemView.findViewById(R.id.courses_view)).getText().toString();
+            //String courses_view = ((TextView) coursesRecyclerView.findViewHolderForAdapterPosition(0).itemView.findViewById(R.id.title)).getText().toString();
+            View view=coursesRecyclerView;
+            TextView textView= (TextView) view.findViewById(R.id.courses_view);
+            String text=textView.getText().toString();
 
-
-            TestCase.assertEquals("CSE110, Fall 2018", courses_view);
+            TestCase.assertEquals("CSE110, Fall 2018", text);
                 }
         );
     }

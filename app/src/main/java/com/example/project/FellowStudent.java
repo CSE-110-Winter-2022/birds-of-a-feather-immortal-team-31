@@ -14,4 +14,10 @@ public class FellowStudent {
         this.photoURL = photoURL;
         this.courses = courses;
     }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+
 }

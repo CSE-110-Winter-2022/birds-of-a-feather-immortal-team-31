@@ -24,6 +24,7 @@ public class PersonDetailActivity extends AppCompatActivity {
     protected Course demo2 = new Course(2019, "Winter", "CSE101");
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

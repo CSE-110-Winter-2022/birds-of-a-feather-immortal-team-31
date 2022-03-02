@@ -55,7 +55,7 @@ public class Course implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return id == course.id && year == course.year && quarter.equals(course.quarter) && subjectAndNumber.equals(course.subjectAndNumber);
+        return year == course.year && quarter.equals(course.quarter) && subjectAndNumber.equals(course.subjectAndNumber);
     }
 
     @Override
@@ -65,5 +65,19 @@ public class Course implements Serializable {
 
     public String courseToString(){
         return subjectAndNumber + "%" + quarter + "^" + String.valueOf(year) + "~";
+    }
+
+    public int quarterToNum(){
+        switch (quarter){
+            case "fall":
+                return 3;
+            case "summer":
+                return 2;
+            case "spring":
+                return 1;
+            case "winter":
+                return 0;
+        }
+        return -1;
     }
 }
