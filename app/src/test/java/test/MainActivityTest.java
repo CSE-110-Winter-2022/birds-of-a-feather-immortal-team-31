@@ -3,13 +3,11 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.annotation.ContentView;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,18 +71,13 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
+            activity.usersRecyclerView = activity.findViewById(R.id.users_view);
+            activity.usersLayoutManager = new LinearLayoutManager(activity);
+            activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
+            activity.userViewAdapter = new UsersViewAdapter(activity.fellowUsers);
+            activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
 
-            //TODO get users from recyclerView
-            activity.setFellowUsers(this.fellowUsers);
-
-            usersRecyclerView = activity.findViewById(R.id.users_view);
-
-            usersLayoutManager = new LinearLayoutManager(activity);
-            usersRecyclerView.setLayoutManager(usersLayoutManager);
-
-            userViewAdapter = new UsersViewAdapter(activity.getFellowUsers());
-            usersRecyclerView.setAdapter(userViewAdapter);
-
+            int count = activity.userViewAdapter.getItemCount();
 
             Spinner spinner = activity.findViewById(R.id.spinner);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getApplicationContext(),
@@ -93,36 +86,17 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-            //spinner.performClick();
-
             spinner.setSelection(adapter.getPosition("Recency"));
-            int count = usersRecyclerView.getChildCount();
 
-            /*
-            onView(withId(R.id.spinner)).perform(click());
-            onData(allOf(is(instanceOf(String.class)), is("Recency"))).perform(click());
-            onView(withId(R.id.spinner)).check(matches(withSpinnerText(containsString("Recency"))));
-
-             */
             SortByRecencyComparator recencyComparator = new SortByRecencyComparator();
-            for (int i = 0; i < count; i++) {
-                String user1Name = usersRecyclerView.getChildAt(i).toString();
-                String user2Name = usersRecyclerView.getChildAt(i+1).toString();
+            for (int i = 0; i < count-1; i++) {
+                User user1 = activity.userViewAdapter.getUserAtIndex(i);
+                User user2 = activity.userViewAdapter.getUserAtIndex(i+1);
 
-                User user1 = null;
-                User user2 = null;
+                assertTrue(recencyComparator.compare(user1, user2) == -1 | recencyComparator.compare(user1, user2) == 0);
 
-                for(User u : fellowUsers){
-                    if(u.getName() == user1Name) user1 = u;
-                    if(u.getName() == user2Name) user2 = u;
-                }
-                assertTrue(recencyComparator.compare(user1, user2) == 1 | recencyComparator.compare(user1, user2) ==0 );
             }
         });
-
-
-        //assertEquals(1, 1);
-        //assertEquals(fellowUsers.get(0).getName(), "Luffy");
     }
 
     // implementation of AdapterView
@@ -141,4 +115,6 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+
 }

@@ -38,6 +38,10 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
         holder.setUser(this.users.get(position));
     }
 
+    public User getUserAtIndex(int i) {
+        return users.get(i);
+    }
+
     @Override
     public int getItemCount() {
         return this.users.size();
@@ -71,5 +75,7 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
             intent.putExtra("user_courses", (Serializable) this.user.getCourses());
             context.startActivity(intent);
         }
+
+
     }
 }
