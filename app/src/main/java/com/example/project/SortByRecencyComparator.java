@@ -60,14 +60,14 @@ public class SortByRecencyComparator implements Comparator<User> {
                 if (quarter.equals("fall"))
                 {
                     // if there is fall quarter, return directly
-                    return 6;
+                    return 4;
                 }
-                else if (quarter.equals("special summer session"))
+                else if (quarter.equals("summer"))
                 {
                     // if sss, assign count to 5
-                    count = 5;
+                    count = 3;
                 }
-                else if (quarter.equals("summer session ii"))
+                /*else if (quarter.equals("summer session ii"))
                 {
                     // only change value when quarter of lower recency is visited
                     if (count < 4)
@@ -75,13 +75,15 @@ public class SortByRecencyComparator implements Comparator<User> {
                         count = 4;
                     }
                 }
-                else if (quarter.equals("summer session i"))
+                /*else if (quarter.equals("summer session i"))
                 {
                     if (count < 3)
                     {
                         count = 3;
                     }
                 }
+
+                 */
                 else if (quarter.equals("spring"))
                 {
                     if (count < 2)
