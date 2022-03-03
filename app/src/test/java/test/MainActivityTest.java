@@ -115,6 +115,4 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
-
 }
