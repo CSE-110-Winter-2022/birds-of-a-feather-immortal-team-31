@@ -38,15 +38,15 @@ jobs:
       #Run the BDD scenario test of main activity using the runners shell
       - name: Mainactivity test
         run: |
-          ./gradlew app/src/test/java/test/MainActivityTest
+          ./gradlew app/src/test/java/test/MainActivityTest/
 
 
       #Run the Sort by recency test using the runners shell
       - name: Sort by recency test
         run: |
-          ./gradlew app/src/test/java/test/sort_by_recencyTest
+          ./gradlew app/src/test/java/test/sort_by_recencyTest/
 
       #Run the Sort by size test using the runners shell
       - name: Sort by size test
         run: |
-          ./gradlew app/src/test/java/test/sort_by_class_sizeTest
+          ./gradlew app/src/test/java/test/sort_by_class_sizeTest/
