@@ -1,5 +1,8 @@
 package test;
+
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,7 +38,10 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
     protected RecyclerView.LayoutManager usersLayoutManager;
     protected UsersViewAdapter userViewAdapter;
 
-    List<User> fellowUsers = new ArrayList<User>();
+    protected List<User> fellowUsers = new ArrayList<User>();
+
+    protected User currUser1 = null;
+    protected User currUser2 = null;
 
 
     @Before
@@ -61,13 +67,16 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
         fellowUsers.add(user1);
         fellowUsers.add(user2);
         fellowUsers.add(user3);
-
-
     }
+
+
 
 
     @Test
     public void sortedCorrectly(){
+
+
+
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
@@ -83,21 +92,51 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
             userViewAdapter = new UsersViewAdapter(activity.getFellowUsers());
             usersRecyclerView.setAdapter(userViewAdapter);
 
-            //TODO: perform click on recency in the dropdown menu
+
             Spinner spinner = activity.findViewById(R.id.spinner);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getApplicationContext(),
                     R.array.font_sizes, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-            /*onView(withId(R.id.editText_search))
-                    .perform(typeTextIntoFocusedView("x"), showDropDown())
-            onView(withText("xyz"))
-                    .inRoot(RootMatchers.isPlatformPopup())
-                    .check(matches(isDisplayed()))*/
+
+            //spinner.performClick();
+
+            spinner.setSelection(adapter.getPosition("recent"));
+            int count = usersRecyclerView.getChildCount();
+
+            /*
+            onView(withId(R.id.spinner)).perform(click());
+            onData(allOf(is(instanceOf(String.class)), is("Recency"))).perform(click());
+            onView(withId(R.id.spinner)).check(matches(withSpinnerText(containsString("Recency"))));
+             */
+
+            for (int i = 0; i < count; i++) {
+                String user1Name = usersRecyclerView.getChildAt(i).toString();
+                String user2Name = usersRecyclerView.getChildAt(i+1).toString();
+
+
+
+                for(User u : activity.getFellowUsers()){
+                    if(u.getName() == user1Name) this.currUser1 = u;
+                    if(u.getName() == user2Name) this.currUser2 = u;
+                }
+
+               // assertEquals(1,2);
+                //assertEquals(recencyComparator.compare(currUser1, currUser2), 1);
+               // assertEquals(recencyComparator.compare(currUser1, currUser2), 0);
+
+                //assertEquals(recencyComparator.compare(currUser1, currUser2), 1);
+
+                SortByRecencyComparator recencyComparator = new SortByRecencyComparator();
+
+                assertEquals(recencyComparator.compare(this.currUser1, this.currUser2), 1);
+                assertThat(1, equalTo(2));
+
+            }
         });
-        assertEquals(1, 1);
-        assertEquals(fellowUsers.get(0).getName(), "Luffy");
+
+        //assertEquals(fellowUsers.get(0).getName(), "Luffy");
     }
 
     // implementation of AdapterView
@@ -107,9 +146,14 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
         // Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
         switch (text)
         {
-            case "Recency":
+            case "recent":
                 Collections.sort(fellowUsers, new SortByRecencyComparator());
         }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     @Test
@@ -117,11 +161,8 @@ public class Sort_by_recencyTest implements AdapterView.OnItemSelectedListener{
         SortByRecencyComparator k = new SortByRecencyComparator();
         int a=k.RecencyHelper(fellowUsers.get(0).getCourses());
         assertEquals(a,4);
-
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }
+
+
