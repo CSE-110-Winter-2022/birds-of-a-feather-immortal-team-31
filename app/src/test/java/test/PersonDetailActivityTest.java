@@ -42,7 +42,7 @@ public class PersonDetailActivityTest {
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity->{
             List<Course> data = new ArrayList<Course>();
-            Course demo1 = new Course(2018, "Fall", "CSE110");
+            Course demo1 = new Course(2018, "Fall", "CSE110", "tiny");
             data.add(demo1);
 
             coursesRecyclerView = activity.findViewById(R.id.courses_view);

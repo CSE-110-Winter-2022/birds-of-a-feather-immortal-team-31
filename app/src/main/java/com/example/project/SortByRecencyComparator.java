@@ -14,93 +14,39 @@ public class SortByRecencyComparator implements Comparator<User> {
     @Override
     public int compare(User user, User t1) {
         // compare year first
-        int year = RecencyYearHelper(user.getCourses()) < RecencyYearHelper(t1.getCourses()) ? 1 :
-                RecencyYearHelper(user.getCourses()) > RecencyYearHelper(t1.getCourses()) ? -1 : 0;
-
-        // if there is a recency between year, return directly
-        if (year != 0)
-        {
-            return year;
-        }
-
-        // if they have the same max year, compare quarter
-        return RecencyQuarterHelper(user.getCourses()) < RecencyQuarterHelper(t1.getCourses()) ? 1 :
-                RecencyQuarterHelper(user.getCourses()) > RecencyQuarterHelper(t1.getCourses()) ? -1 : 0;
+        return RecencyHelper(user.getCourses()) < RecencyHelper(t1.getCourses()) ? 1 :
+                RecencyHelper(user.getCourses()) > RecencyHelper(t1.getCourses()) ? -1 : 0;
     }
 
-    public int RecencyYearHelper(List<Course> list)
+    public int RecencyHelper(List<Course> list)
     {
-        int max = list.get(0).getYear();
-        for(int i = 1; i < list.size(); i++)
-        {
-            if (list.get(i).getYear() > max)
-            {
-                max = list.get(i).getYear();
-            }
-        }
-        return max;
-    }
-    // return the max year in a given list of courses
-
-
-    // return the int value of each quarter base on recency:
-    // fall -> 6; sss -> 5; ... spring -> 2; winter -> 1
-    public int RecencyQuarterHelper(List<Course> list)
-    {
-        // temp var that stores the output
-        int count = 0;
-        int maxYear = RecencyYearHelper(list);
-
+        int weight = 0;
         for(int i = 0; i < list.size(); i++)
         {
-            // only compare the course with max year, neglect the rest
-            if (list.get(i).getYear() == maxYear)
+            if (list.get(i).getYear() < 2021)
+            {
+                weight++;
+            }
+            else
             {
                 String quarter = list.get(i).getQuarter();
-                if (quarter.equals("fall"))
+                switch(quarter)
                 {
-                    // if there is fall quarter, return directly
-                    return 4;
-                }
-                else if (quarter.equals("summer"))
-                {
-                    // if sss, assign count to 5
-                    count = 3;
-                }
-                /*else if (quarter.equals("summer session ii"))
-                {
-                    // only change value when quarter of lower recency is visited
-                    if (count < 4)
-                    {
-                        count = 4;
-                    }
-                }
-                /*else if (quarter.equals("summer session i"))
-                {
-                    if (count < 3)
-                    {
-                        count = 3;
-                    }
-                }
-
-                 */
-                else if (quarter.equals("spring"))
-                {
-                    if (count < 2)
-                    {
-                        count = 2;
-                    }
-                }
-                else if (quarter.equals("winter"))
-                {
-                    if (count < 1)
-                    {
-                        count = 1;
-                    }
+                    case "fall":
+                        weight += 5;
+                        break;
+                    case "summer":
+                        weight += 4;
+                        break;
+                    case "spring":
+                        weight += 3;
+                        break;
+                    case "winter":
+                        weight += 2;
+                        break;
                 }
             }
         }
-        return count;
+        return weight;
     }
-
 }

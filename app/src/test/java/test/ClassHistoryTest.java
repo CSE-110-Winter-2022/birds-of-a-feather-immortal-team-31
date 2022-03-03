@@ -1,12 +1,7 @@
 package test;
 
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
-import android.text.Editable;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +12,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.project.ClassHistory;
-import com.example.project.MainActivity;
 import com.example.project.R;
 import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
@@ -27,7 +21,6 @@ import junit.framework.TestCase;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -82,7 +75,7 @@ public class ClassHistoryTest extends AppCompatActivity {
                     //assert(activity.findViewById(R.id.textView1).getVisibility()==View.INVISIBLE);
                     //assert("Y"=="Y");
 
-                    Course course = new Course(2022, "winter", "CSE110");
+                    Course course = new Course(2022, "winter", "CSE110", "tiny");
                     AppDatabase db = AppDatabase.singleton(ApplicationProvider.getApplicationContext());
                     db.coursesDao().insert(course);
                     List<Course>  courses = db.coursesDao().getAll();
@@ -116,6 +109,7 @@ public class ClassHistoryTest extends AppCompatActivity {
                     String quarter = "Summer";
                     String subject = "CSE";
                     String number = "105";
+                    String size = "tiny";
 
 
                     AppDatabase db = AppDatabase.singleton(ApplicationProvider.getApplicationContext());
@@ -129,9 +123,12 @@ public class ClassHistoryTest extends AppCompatActivity {
                     TextView numberText = (TextView) activity.findViewById(R.id.editTextNumber);
                     numberText.setText(number);
 
+                    TextView sizeText = (TextView) activity.findViewById(R.id.editTextSize);
+                    sizeText.setText(size);
+
                     activity.findViewById(R.id.buttonSaveHistory).performClick();
 
-                    Course course = new Course(year, quarter, subject+number);
+                    Course course = new Course(year, quarter, subject+number, size);
 
                     List<Course>  courses = db.coursesDao().getAll();
                     System.out.println(courses.get(0).getYear());
@@ -139,6 +136,7 @@ public class ClassHistoryTest extends AppCompatActivity {
                     assertEquals(course.getYear(),courses.get(0).getYear());
                     assertEquals(course.getQuarter(),courses.get(0).getQuarter());
                     assertEquals(course.getSubjectAndNumber(),courses.get(0).getSubjectAndNumber());
+                    assertEquals(course.getSize(),courses.get(0).getSize());
                     /*EditText textView = activity.findViewById(R.id.editTextSubject);
                     String name = textView.getText().toString();*/
                     assertEquals(1+1,2);

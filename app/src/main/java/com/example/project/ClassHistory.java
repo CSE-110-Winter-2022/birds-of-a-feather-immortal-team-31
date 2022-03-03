@@ -1,16 +1,12 @@
 package com.example.project;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
@@ -35,12 +31,14 @@ public class ClassHistory extends AppCompatActivity {
             TextView quarterView = findViewById(R.id.editTextQuarter);
             TextView subjectView = findViewById(R.id.editTextSubject);
             TextView numberView = findViewById(R.id.editTextNumber);
+            TextView sizeView = findViewById(R.id.editTextSize);
 
             String subjectAndNumber = subjectView.getText().toString().toLowerCase(Locale.ROOT) + numberView.getText().toString();
             String quarter = quarterView.getText().toString().toLowerCase(Locale.ROOT);
             int year = Integer.parseInt(yearView.getText().toString());
+            String size = sizeView.getText().toString().toLowerCase(Locale.ROOT);
 
-            Course newCourse = new Course(year, quarter, subjectAndNumber);
+            Course newCourse = new Course(year, quarter, subjectAndNumber, size);
             try{
                 db.coursesDao().insert(newCourse);
             }
@@ -53,6 +51,7 @@ public class ClassHistory extends AppCompatActivity {
             quarterView.setText("");
             subjectView.setText("");
             numberView.setText("");
+            sizeView.setText("");
         }
         catch(NumberFormatException e){
             Utilities.showAlert(this, "Year has to be a number");
@@ -71,10 +70,12 @@ public class ClassHistory extends AppCompatActivity {
         TextView quarterView = findViewById(R.id.editTextQuarter);
         TextView subjectView = findViewById(R.id.editTextSubject);
         TextView numberView = findViewById(R.id.editTextNumber);
+        TextView sizeView = findViewById(R.id.editTextSize);
         editor.putString("year",yearView.getText().toString());
         editor.putString("quarter",quarterView.getText().toString());
         editor.putString("subject",subjectView.getText().toString());
         editor.putString("number",numberView.getText().toString());
+        editor.putString("size",sizeView.getText().toString());
         editor.apply();
     }
 }

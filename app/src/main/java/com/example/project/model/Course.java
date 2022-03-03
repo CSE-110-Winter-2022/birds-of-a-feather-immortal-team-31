@@ -28,10 +28,15 @@ public class Course implements Serializable {
     @ColumnInfo(name = "course")
     public String subjectAndNumber;
 
-    public Course(int year, String quarter, String subjectAndNumber){
+    @NonNull
+    @ColumnInfo(name = "size")
+    public String size;
+
+    public Course(int year, String quarter, String subjectAndNumber, String size){
         this.year = year;
         this.quarter = quarter;
         this.subjectAndNumber = subjectAndNumber;
+        this.size = size;
     }
 
     public int getYear() {
@@ -46,6 +51,8 @@ public class Course implements Serializable {
         return subjectAndNumber;
     }
 
+    public String getSize() {return size;}
+
     public int getId() {
         return id;
     }
@@ -55,16 +62,16 @@ public class Course implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return year == course.year && quarter.equals(course.quarter) && subjectAndNumber.equals(course.subjectAndNumber);
+        return year == course.year && quarter.equals(course.quarter) && subjectAndNumber.equals(course.subjectAndNumber) && size.equals(course.size);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, year, quarter, subjectAndNumber);
+        return Objects.hash(id, year, quarter, subjectAndNumber, size);
     }
 
     public String courseToString(){
-        return subjectAndNumber + "%" + quarter + "^" + String.valueOf(year) + "~";
+        return subjectAndNumber + "%" + quarter + "^" + String.valueOf(year) + "~" + size + "$";
     }
 
     public int quarterToNum(){

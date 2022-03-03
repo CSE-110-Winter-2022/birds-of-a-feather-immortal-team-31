@@ -1,15 +1,12 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.annotation.ContentView;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +16,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.example.project.MainActivity;
 import com.example.project.R;
 import com.example.project.SortByRecencyComparator;
+import com.example.project.SortBySizeComparator;
 import com.example.project.UsersViewAdapter;
 import com.example.project.model.Course;
 import com.example.project.model.User;
@@ -47,9 +45,9 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
 
 
-        Course demo1 = new Course(2020, "spring", "CSE110");
-        Course demo2 = new Course(2077, "winter", "CSE101");
-        Course demo3 = new Course(2020, "fall", "CSE2");
+        Course demo1 = new Course(2020, "spring", "CSE110", "tiny");
+        Course demo2 = new Course(2077, "winter", "CSE101", "small");
+        Course demo3 = new Course(2020, "fall", "CSE2", "medium");
 
         User user1 = new User("Luffy","",new ArrayList<Course>(), 17);
         User user2 = new User("Zoro","",new ArrayList<Course>(), 20);
@@ -69,22 +67,17 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
 
     @Test
-    public void sortedCorrectly(){
+    public void sortRencencyCorrectly(){
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
+            activity.usersRecyclerView = activity.findViewById(R.id.users_view);
+            activity.usersLayoutManager = new LinearLayoutManager(activity);
+            activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
+            activity.userViewAdapter = new UsersViewAdapter(activity.fellowUsers);
+            activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
 
-            //TODO get users from recyclerView
-            activity.setFellowUsers(this.fellowUsers);
-
-            usersRecyclerView = activity.findViewById(R.id.users_view);
-
-            usersLayoutManager = new LinearLayoutManager(activity);
-            usersRecyclerView.setLayoutManager(usersLayoutManager);
-
-            userViewAdapter = new UsersViewAdapter(activity.getFellowUsers());
-            usersRecyclerView.setAdapter(userViewAdapter);
-
+            int count = activity.userViewAdapter.getItemCount();
 
             Spinner spinner = activity.findViewById(R.id.spinner);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getApplicationContext(),
@@ -93,36 +86,56 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-            //spinner.performClick();
+            spinner.setSelection(adapter.getPosition("recent"));
 
-            spinner.setSelection(adapter.getPosition("Recency"));
-            int count = usersRecyclerView.getChildCount();
-
-            /*
-            onView(withId(R.id.spinner)).perform(click());
-            onData(allOf(is(instanceOf(String.class)), is("Recency"))).perform(click());
-            onView(withId(R.id.spinner)).check(matches(withSpinnerText(containsString("Recency"))));
-
-             */
             SortByRecencyComparator recencyComparator = new SortByRecencyComparator();
-            for (int i = 0; i < count; i++) {
-                String user1Name = usersRecyclerView.getChildAt(i).toString();
-                String user2Name = usersRecyclerView.getChildAt(i+1).toString();
+            for (int i = 0; i < count-1; i++) {
+                User user1 = activity.userViewAdapter.getUserAtIndex(i);
+                User user2 = activity.userViewAdapter.getUserAtIndex(i+1);
 
-                User user1 = null;
-                User user2 = null;
-
-                for(User u : fellowUsers){
-                    if(u.getName() == user1Name) user1 = u;
-                    if(u.getName() == user2Name) user2 = u;
-                }
-                assertTrue(recencyComparator.compare(user1, user2) == 1 | recencyComparator.compare(user1, user2) ==0 );
+                //assertTrue(recencyComparator.compare(user1, user2) == -1 || recencyComparator.compare(user1, user2) == 0);
+                assertEquals(recencyComparator.compare(user1, user2), -1);
             }
         });
+    }
+
+    @Test
+    public void sortSizeCorrectly(){
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            activity.usersRecyclerView = activity.findViewById(R.id.users_view);
+            activity.usersLayoutManager = new LinearLayoutManager(activity);
+            activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
+            activity.userViewAdapter = new UsersViewAdapter(activity.fellowUsers);
+            activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
+
+            int count = activity.userViewAdapter.getItemCount();
+
+            Spinner spinner = activity.findViewById(R.id.spinner);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getApplicationContext(),
+                    R.array.font_sizes, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+
+            spinner.setSelection(adapter.getPosition("small classes"));
+
+            SortBySizeComparator sizeComparator = new SortBySizeComparator();
+
+            User user1 = activity.userViewAdapter.getUserAtIndex(0);
+            User user2 = activity.userViewAdapter.getUserAtIndex(1);
+
+            assertEquals(sizeComparator.compare(user1, user2), -1);
+            user1 = activity.userViewAdapter.getUserAtIndex(1);
+            user2 = activity.userViewAdapter.getUserAtIndex(2);
 
 
-        //assertEquals(1, 1);
-        //assertEquals(fellowUsers.get(0).getName(), "Luffy");
+            assertEquals(sizeComparator.compare(user1, user2), 1);
+
+
+
+        });
     }
 
     // implementation of AdapterView
@@ -132,8 +145,14 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
         // Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
         switch (text)
         {
-            case "Recency":
+            case "recent":
                 Collections.sort(fellowUsers, new SortByRecencyComparator());
+                break;
+            case "small classes":
+                Collections.sort(fellowUsers, new SortBySizeComparator());
+                break;
+            default:
+                break;
         }
     }
 
@@ -141,4 +160,8 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+
 }
+
+

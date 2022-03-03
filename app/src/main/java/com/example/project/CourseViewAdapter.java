@@ -37,7 +37,8 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
         String courseName = courses.get(position).getSubjectAndNumber();
         int year = courses.get(position).getYear();
         String quarter = courses.get(position).getQuarter();
-        String text = courseName + ", " + quarter + " " + String.valueOf(year);
+        String size = courses.get(position).getSize();
+        String text = courseName + ", " + quarter + " " + String.valueOf(year) + " " + size;
         holder.courseView.setText(text);
     }
 
