@@ -34,18 +34,3 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-
-      #Run the BDD scenario test of main activity using the runners shell
-      - name: Mainactivity test
-        run: |
-          ./gradlew MainActivityTest
-
-      #Run the Sort by recency test using the runners shell
-      - name: Sort by recency test
-        run: |
-          ./gradlew sort_by_recencyTest
-
-      #Run the Sort by size test using the runners shell
-      - name: Sort by size test
-        run: |
-          ./gradlew sort_by_class_sizeTest
