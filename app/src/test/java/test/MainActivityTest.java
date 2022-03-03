@@ -98,7 +98,8 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             }
         });
     }
-
+    
+    /*
     @Test
     public void sortSizeCorrectly(){
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
@@ -137,6 +138,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
         });
     }
+    */
 
     // implementation of AdapterView
     @Override
