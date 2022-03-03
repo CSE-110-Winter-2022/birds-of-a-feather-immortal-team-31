@@ -8,11 +8,19 @@ import java.util.List;
 
 public class SortBySizeComparator implements Comparator<User> {
 
-    @Override
+    //@Override
     public int compare(User user, User t1) {
         // compare total weight
-        return SizeHelper(user.getCourses()) < SizeHelper(t1.getCourses()) ? 1 :
-                SizeHelper(user.getCourses()) > SizeHelper(t1.getCourses()) ? -1 : 0;
+        if (SizeHelper(user.getCourses()) < SizeHelper(t1.getCourses())){
+            return 1;
+        }
+        else if (SizeHelper(user.getCourses()) > SizeHelper(t1.getCourses())){
+            return -1;
+        }
+
+        return 0;
+      // return SizeHelper(user.getCourses()) < SizeHelper(t1.getCourses()) ? 0 :
+              //  SizeHelper(user.getCourses()) > SizeHelper(t1.getCourses()) ? 0 : 0;
 
     }
 

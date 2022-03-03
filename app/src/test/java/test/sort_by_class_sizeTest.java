@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-public class sort_by_classsizetest {
+public class sort_by_class_sizeTest {
     List<User> fellowUsers = new ArrayList<User>();
 
 
