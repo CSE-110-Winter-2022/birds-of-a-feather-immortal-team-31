@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Dummy users for test purpose
         this.user1.getCourses().add(demo1);
         this.user2.getCourses().add(demo2);
         this.user3.getCourses().add(demo3);
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         fellowUsers.add(user1);
         fellowUsers.add(user2);
         fellowUsers.add(user3);
+
+        //TODO: implement a filter that only add users whp share the same classes with me
 
         SharedPreferences preferences = getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
         String username = preferences.getString("NAME", null);
@@ -150,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         demoCourse.add(demo1);
         demoCourse.add(demo2);
         demoCourse.add(demo3);
+
 
         for (Course c2 : demoCourse) {
             FakedMessageString += c2.courseToString();
@@ -236,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             int cYear = c.getYear();
                             Log.d("in loop", "d");
 
-                            age += currentQuarter - cQuarter + (currentYear - cYear)*6;
+                            age += currentQuarter - cQuarter + (currentYear - cYear)*4;
                             Log.d("Age", String.valueOf(age));
                         }
                         User user = new User(fellowStudentName, fellowStudentPhotoURL, fellowStudentMutualCourse, age);
@@ -334,6 +338,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //TODO: add default option that sort students by their number of mutual courses
+
+
         String text = parent.getItemAtPosition(position).toString();
        // Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
         switch (text)
