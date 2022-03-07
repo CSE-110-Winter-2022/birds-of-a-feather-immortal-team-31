@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private Spinner spinnerTextSize;
 
     // collection of data stored in the hashmap
-    public HashMap<String, List<User>> userLists;
+    public HashMap<String, ArrayList<User>> userLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -296,6 +296,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         String text = textView.getText().toString();
 
         if(text.equals("Start")){
+
+            // Ask for resuming previous sessions or not
+            Intent intent = new Intent (this, resumeActivity.class);
+            intent.putExtra("userLists", userLists);
+            intent.putExtra("currList", fellowUsers);
+            startActivity(intent);
+
             usersRecyclerView.setVisibility(View.VISIBLE);
             Nearby.getMessagesClient(this).subscribe(this.messageListener);
             //Update userViewAdapter
@@ -379,11 +386,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     //Get method for BDD scenario test
     public List<User> getFellowUsers(){
         return this.fellowUsers;
-    }
-
-    public List<User> saveUsers()
-    {
-        return fellowUsers;
     }
 
 }

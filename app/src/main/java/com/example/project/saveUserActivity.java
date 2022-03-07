@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.project.model.User;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class saveUserActivity extends AppCompatActivity {
 
-    HashMap <String, List<User>> userLists;
+    HashMap <String, ArrayList<User>> userLists;
     ArrayList<User> currList;
 
     @Override
@@ -36,7 +37,12 @@ public class saveUserActivity extends AppCompatActivity {
     {
         TextView nameView = findViewById(R.id.name);
         String name = nameView.getText().toString();
-        userLists.put("name", currList);
+        while (userLists.containsKey(name))
+        {
+            Toast.makeText(this, "The name already exists, please enter another name", Toast.LENGTH_LONG).show();
+            name = nameView.getText().toString();
+        }
+        userLists.put(name, currList);
         finish();
     }
 }

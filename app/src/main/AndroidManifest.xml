@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
+            android:name=".chooseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".resumeActivity"
+            android:exported="false" />
+        <activity
             android:name=".saveUserActivity"
             android:exported="false" />
         <activity
