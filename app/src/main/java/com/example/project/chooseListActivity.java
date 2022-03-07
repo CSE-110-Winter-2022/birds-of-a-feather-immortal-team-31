@@ -22,7 +22,7 @@ public class chooseListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_list)
+        setContentView(R.layout.activity_choose_list);
         Intent intent = getIntent();
         userLists = intent.getParcelableExtra("userLists");
         currList = intent.getParcelableExtra("currList");
