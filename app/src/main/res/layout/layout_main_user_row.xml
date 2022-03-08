@@ -9,7 +9,16 @@
 
     <TextView
         android:id="@+id/users_row"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="82dp"
+        android:textSize="24sp" />
+
+    //The image button for "favorite" stars
+    <ImageButton
+        android:id="@+id/star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp" />
+        android:background="@null"
+        android:src="@android:drawable/btn_star" />
 </FrameLayout>

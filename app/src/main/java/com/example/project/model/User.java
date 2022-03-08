@@ -12,6 +12,8 @@ public class User {
 
     private int age;
 
+    public boolean star;
+
     @NonNull
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -38,6 +40,8 @@ public class User {
         this.courses = courses;
 
         this.age = age;
+
+        this.star = false;
     }
 
     public String getName(){return this.name;}
@@ -48,6 +52,16 @@ public class User {
 
     public int getAge() {
         return age;
+    }
+
+    //Add or remove users from my "favorite"
+    public void changeStar(){
+        this.star = !this.star;
+    }
+
+    //Get the state of favorite of this user
+    public boolean getStar(){
+        return this.star;
     }
 
 }

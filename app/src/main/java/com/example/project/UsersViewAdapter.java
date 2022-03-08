@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,11 +54,28 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
     {
         private final TextView userView;
         private User user;
+        boolean isEnable = this.user.getStar();
 
         ViewHolder(View itemView) {
             super(itemView);
             this.userView = itemView.findViewById(R.id.users_row);
             itemView.setOnClickListener(this);
+
+            final ImageButton ButtonStar = (ImageButton) itemView.findViewById(R.id.star);
+            ButtonStar.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if (isEnable){
+                        ((ImageButton) view).setImageResource(android.R.drawable.btn_star_big_off);
+                        ViewHolder.this.user.changeStar();
+                    }else{
+                        ((ImageButton) view).setImageResource(android.R.drawable.btn_star_big_on);
+                        ViewHolder.this.user.changeStar();
+                    }
+                    isEnable = !isEnable;
+                }
+            });
         }
 
         public void setUser(User user){
@@ -75,7 +93,5 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
             intent.putExtra("user_courses", (Serializable) this.user.getCourses());
             context.startActivity(intent);
         }
-
-
     }
 }
