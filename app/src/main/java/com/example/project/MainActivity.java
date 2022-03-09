@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private Spinner spinnerTextSize;
 
     // collection of data stored in the hashmap
-    public HashMap<String, ArrayList<User>> userLists;
+    public HashMap<String, ArrayList<User>> userLists = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -299,8 +299,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
             // Ask for resuming previous sessions or not
             Intent intent = new Intent (this, resumeActivity.class);
+
+            Bundle temp = new Bundle();
+            temp.putSerializable("temp", fellowUsers);
             intent.putExtra("userLists", userLists);
-            intent.putExtra("currList", fellowUsers);
+            intent.putExtra("currList", temp);
             startActivity(intent);
 
             usersRecyclerView.setVisibility(View.VISIBLE);

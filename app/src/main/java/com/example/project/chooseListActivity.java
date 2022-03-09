@@ -28,7 +28,8 @@ public class chooseListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_list);
         Intent intent = getIntent();
         userLists = intent.getParcelableExtra("userLists");
-        currList = intent.getParcelableExtra("currList");
+        Bundle temp = intent.getBundleExtra("temp");
+        currList = (ArrayList<User>) temp.getSerializable("currList");
         keyViewAdapter = new KeyViewAdapter((List<String>) userLists.keySet());
         keyRecyclerView.setAdapter(keyViewAdapter);
         TextView textView = findViewById(R.id.choice);
