@@ -22,4 +22,7 @@ public class FakedMessageListener extends MessageListener{
             this.messageListener.onLost(message);
         }, 6, frequency, TimeUnit.SECONDS);
     }
+
+    public void cleanup() {
+    }
 }

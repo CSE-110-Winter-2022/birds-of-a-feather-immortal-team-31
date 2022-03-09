@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.project.FakedMessageListener;
 import com.example.project.MainActivity;
 import com.example.project.R;
 import com.example.project.SortByRecencyComparator;
@@ -137,6 +138,37 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
         });
     }
+
+    /*
+    @Test
+    public void nearbyTest(){
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            Course testCourse1 = new Course(2020, "spring", "CSE110", "tiny");
+            Course testCourse2 = new Course(2021, "winter", "CSE101", "medium");
+            List<Course> testCourses = new ArrayList<Course>();
+            testCourses.add(testCourse1);
+            testCourses.add(testCourse2);
+
+            List<Course> myCourses = new ArrayList<Course>();
+            myCourses.add(testCourse1);
+
+            String FakedMessageString = "B3%&J" + "Bjarki," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5,";
+            activity.fellowUsers = null;
+            activity.myCourses = myCourses;
+            for (Course c2 : testCourses) {
+                FakedMessageString += c2.courseToString();
+            }
+            activity.messageListener = new FakedMessageListener(activity.messageListener, 1, FakedMessageString);
+            System.out.println(activity.fellowUsers.size()+ "jibbi");
+            List<Course> mutualCourses = activity.fellowUsers.get(0).getCourses();
+            assertEquals(mutualCourses.get(0), myCourses.get(0));
+        });
+    }
+
+     */
+
 
     // implementation of AdapterView
     @Override
