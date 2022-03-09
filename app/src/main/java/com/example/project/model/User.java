@@ -5,10 +5,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(tableName = "users")
-public class User {
+public class User implements Serializable {
 
     private int age;
 
@@ -50,6 +51,11 @@ public class User {
 
     public List<Course> getCourses(){return this.courses;}
 
+    //Get the state of favorite of this user
+    public boolean getStar(){
+        return this.star;
+    }
+
     public int getAge() {
         return age;
     }
@@ -58,10 +64,4 @@ public class User {
     public void changeStar(){
         this.star = !this.star;
     }
-
-    //Get the state of favorite of this user
-    public boolean getStar(){
-        return this.star;
-    }
-
 }

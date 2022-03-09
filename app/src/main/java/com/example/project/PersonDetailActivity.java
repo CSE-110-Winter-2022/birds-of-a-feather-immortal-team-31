@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.model.Course;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDetailActivity extends AppCompatActivity {
@@ -19,9 +18,6 @@ public class PersonDetailActivity extends AppCompatActivity {
     protected RecyclerView.LayoutManager coursesLayoutManager;
     protected CourseViewAdapter courseViewAdapter;
 
-    protected List<Course> data = new ArrayList<Course>();
-    protected Course demo1 = new Course(2018, "Fall", "CSE110", "tiny");
-    protected Course demo2 = new Course(2019, "Winter", "CSE101", "medium");
 
 
 
@@ -30,8 +26,6 @@ public class PersonDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_detail);
 
-        data.add(demo1);
-        data.add(demo2);
 
         String name = getIntent().getStringExtra("user_name");
         String url = getIntent().getStringExtra("user_photoURL");

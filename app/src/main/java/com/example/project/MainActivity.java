@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             usersRecyclerView.setVisibility(View.VISIBLE);
             Nearby.getMessagesClient(this).subscribe(this.messageListener);
             //Update userViewAdapter
-            userViewAdapter = new UsersViewAdapter(fellowUsers);
+            userViewAdapter.setFellowUsers(fellowUsers);
 
             usersRecyclerView.setAdapter(userViewAdapter);
 
@@ -308,6 +308,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             Nearby.getMessagesClient(this).unsubscribe(this.messageListener);
             textView.setText("Start");
         }
+    }
+
+    //Onclick event of viewing favorite students
+    public void onStarClicked(View view) {
+        Intent intent= new Intent(MainActivity.this, FavoriteStudentActivity.class);
+        startActivity(intent);
     }
 
 
@@ -372,5 +378,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public List<User> getFellowUsers(){
         return this.fellowUsers;
     }
-
 }

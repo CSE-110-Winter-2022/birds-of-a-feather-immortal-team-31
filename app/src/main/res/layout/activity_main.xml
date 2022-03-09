@@ -80,6 +80,7 @@
         android:layout_width="67dp"
         android:layout_height="57dp"
         android:background="@android:drawable/btn_star"
+        android:onClick="onStarClicked"
         android:text="View"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
