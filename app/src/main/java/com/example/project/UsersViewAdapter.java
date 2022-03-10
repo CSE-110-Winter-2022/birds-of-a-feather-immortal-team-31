@@ -51,6 +51,9 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
         return users.get(i);
     }
 
+    //Get users from this adapter
+    public List<User> getUsers(){return this.users;}
+
     @Override
     public int getItemCount() {
         return this.users.size();
@@ -79,12 +82,12 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
                 @Override
                 public void onClick(View view) {
                     if (ViewHolder.this.user.getStar()){
-                        ((ImageButton) view).setImageResource(android.R.drawable.btn_star_big_off);
                         ViewHolder.this.user.changeStar();
+                        ViewHolder.this.setUser(ViewHolder.this.user);
                         UsersViewAdapter.this.db.usersDao().delete(ViewHolder.this.user);
                     }else{
-                        ((ImageButton) view).setImageResource(android.R.drawable.btn_star_big_on);
                         ViewHolder.this.user.changeStar();
+                        ViewHolder.this.setUser(ViewHolder.this.user);
                         UsersViewAdapter.this.db.usersDao().insert(ViewHolder.this.user);
                     }
                 }

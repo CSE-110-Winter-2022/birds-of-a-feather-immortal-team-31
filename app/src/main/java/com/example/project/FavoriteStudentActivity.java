@@ -1,5 +1,7 @@
 package com.example.project;
 
+import static com.example.project.MainActivity.getMainActivity;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -39,7 +41,24 @@ public class FavoriteStudentActivity extends AppCompatActivity
         usersRecyclerView.setAdapter(userViewAdapter);
     }
 
+    //Helper method that set the stars correctly on the main activity
+    public void setStars(){
+        List<User> fellowUsers = getMainActivity().getFellowUsers();
+        for(User fellowUser: fellowUsers){
+            for(User favorite_user:this.userViewAdapter.getUsers()){
+                //Should've been compared by id, but didn't work
+                if(fellowUser.getName().equals(favorite_user.getName())){
+                    fellowUser.setStar(favorite_user.getStar());
+                }
+            }
+        }
+        getMainActivity().setFellowUsers(fellowUsers);
+        getMainActivity().userViewAdapter = new UsersViewAdapter(getApplicationContext(), fellowUsers);
+        getMainActivity().usersRecyclerView.setAdapter(getMainActivity().userViewAdapter);
+    }
+
     public void onBackButtonClicked(View view) {
+        setStars();
         finish();
     }
 }

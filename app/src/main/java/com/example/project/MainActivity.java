@@ -36,6 +36,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
 
+    //An instance for other class to access this activity
+    private static MainActivity mainActivity;
     SignInButton signInButton;
     private GoogleApiClient googleApiClient;
     //TextView textView;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public RecyclerView usersRecyclerView;
     public RecyclerView.LayoutManager usersLayoutManager;
     public UsersViewAdapter userViewAdapter;
+
 
     protected List<Course> courses = new ArrayList<Course>();
     protected Course demo1 = new Course(2020, "spring", "CSE110", "tiny");
@@ -68,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainActivity = this;
 
         //Dummy users for test purpose
         this.user1.addCourse(demo1);
@@ -368,6 +373,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
+    public static MainActivity getMainActivity() {
+        return mainActivity;
+    }
 
     //Set method for BDD scenario test
     public void setFellowUsers(List<User> fellowUsers){
