@@ -50,8 +50,8 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
 
         Course demo1 = new Course(2020, "spring", "CSE110", "tiny");
-        Course demo2 = new Course(2077, "winter", "CSE101", "small");
-        Course demo3 = new Course(2020, "fall", "CSE2", "medium");
+        Course demo2 = new Course(2021, "winter", "CSE101", "medium");
+        Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
         User user1 = new User("Luffy","",new ArrayList<Course>(), 179876, true);
         User user2 = new User("Zoro","",new ArrayList<Course>(), 200879, false);
@@ -78,7 +78,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             activity.usersRecyclerView = activity.findViewById(R.id.users_view);
             activity.usersLayoutManager = new LinearLayoutManager(activity);
             activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
-            activity.userViewAdapter = new UsersViewAdapter(activity.fellowUsers);
+            activity.userViewAdapter = new UsersViewAdapter(fellowUsers);
             activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
 
             int count = activity.userViewAdapter.getItemCount();
@@ -103,7 +103,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
         });
     }
 
-    /*
+
     @Test
     public void sortSizeCorrectly(){
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
@@ -112,7 +112,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             activity.usersRecyclerView = activity.findViewById(R.id.users_view);
             activity.usersLayoutManager = new LinearLayoutManager(activity);
             activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
-            activity.userViewAdapter = new UsersViewAdapter(activity.fellowUsers);
+            activity.userViewAdapter = new UsersViewAdapter(fellowUsers);
             activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
 
             int count = activity.userViewAdapter.getItemCount();
@@ -131,18 +131,18 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             User user1 = activity.userViewAdapter.getUserAtIndex(0);
             User user2 = activity.userViewAdapter.getUserAtIndex(1);
 
-            assertEquals(sizeComparator.compare(user1, user2), -1);
-            user1 = activity.userViewAdapter.getUserAtIndex(1);
-            user2 = activity.userViewAdapter.getUserAtIndex(2);
+            assertEquals(-1, sizeComparator.compare(user1, user2));
+            user1 = activity.userViewAdapter.getUserAtIndex(2);
+            user2 = activity.userViewAdapter.getUserAtIndex(1);
 
 
-            assertEquals(sizeComparator.compare(user1, user2), 1);
+            assertEquals(1, sizeComparator.compare(user1, user2));
 
 
 
         });
     }
-    */
+
 
     @Test
     public void nearbyTestMutualCourses(){
@@ -230,7 +230,6 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 }
 
