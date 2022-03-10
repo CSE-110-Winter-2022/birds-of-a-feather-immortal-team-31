@@ -305,7 +305,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 String fellowStudentID = sMessage.substring(k3, k4);
                 List<Course> fellowStudentMutualCourse = new ArrayList<Course>();
                 Log.d("FellowStudentID", fellowStudentID);
-
                 for (int i = k4 + 1; i < sMessage.length(); i++) {
                     int oldI = i;
                     String fellowStudentSubjectAndNumber = "";
@@ -313,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     String fellowStudentYear = "";
                     String fellowStudentSize = "";
                     Course fellowStudentThisCourse;
+
 
                     while (true) {
                         if (sMessage.charAt(i) == '%') {   //subject and course divider
@@ -334,10 +334,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             fellowStudentSize = sMessage.substring(oldI, i);
                             fellowStudentThisCourse = new Course(Integer.parseInt(fellowStudentYear),
                                     fellowStudentQuarter.toLowerCase(Locale.ROOT), fellowStudentSubjectAndNumber.toLowerCase(Locale.ROOT), fellowStudentSize);
+
                             for (Course myCourse : myCourses) {
                                 if (myCourse.equals(fellowStudentThisCourse)) {
                                     fellowStudentMutualCourse.add(fellowStudentThisCourse);
-                                    Log.e("Add course", fellowStudentThisCourse.courseToString());
                                 }
                             }
                             break;
@@ -363,14 +363,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 if (fellowStudentMutualCourse.isEmpty()==false) {
                     Log.d("in first if", "v");
-                    int age = 0;
-                    for (Course c : fellowStudentMutualCourse){
-                        int cQuarter = c.quarterToNum();
-                        int cYear = c.getYear();
-
-                        age += currentQuarter - cQuarter + (currentYear - cYear)*6;
-
-                    }
                     if(waved) fellowStudentName += new String(Character.toChars(0x1F44B));
                     User user = new User(fellowStudentName, fellowStudentPhotoURL, fellowStudentMutualCourse, Integer.parseInt(fellowStudentID), waved);
                     boolean alreadyAdded = false;

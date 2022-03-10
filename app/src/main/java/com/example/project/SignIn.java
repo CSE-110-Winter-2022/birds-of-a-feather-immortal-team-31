@@ -40,6 +40,7 @@ public class SignIn extends AppCompatActivity{
         editor.putString("NAME", usernameView.toString());
         editor.putString("URL", URLView.toString());
         editor.putString("ID", id);
+        editor.apply();
         finish();
     }
 }

@@ -37,6 +37,7 @@ public class PublishMessageService extends Service {
 
         String messageString = "B3%&J";
         messageString += usernameFinal + "," + photourlFinal + "," + myId + ",";
+
         for (Course c : myCourses) {
             messageString += c.courseToString();
         }
