@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.project.SortBySizeComparator;
+import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
 import com.example.project.model.User;
 
@@ -52,6 +53,7 @@ public class sort_by_class_sizeTest {
         SortBySizeComparator k = new SortBySizeComparator();
         double a=k.SizeHelper(fellowUsers.get(0).getCourses());
         assertEquals(a,1.51,0.01);
+        AppDatabase.setSingletonInstance(null);
 
     }
 }

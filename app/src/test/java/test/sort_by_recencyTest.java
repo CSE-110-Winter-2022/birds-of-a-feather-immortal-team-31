@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.project.SortByRecencyComparator;
+import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
 import com.example.project.model.User;
 
@@ -52,7 +53,7 @@ public class sort_by_recencyTest {
         SortByRecencyComparator k = new SortByRecencyComparator();
         int a=k.RecencyHelper(fellowUsers.get(0).getCourses());
         assertEquals(a,4);
-
+        AppDatabase.setSingletonInstance(null);
     }
 }
 

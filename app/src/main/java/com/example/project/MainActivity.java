@@ -2,6 +2,8 @@ package com.example.project;
 
 import static android.content.ContentValues.TAG;
 
+import static com.google.android.gms.nearby.Nearby.getMessagesClient;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +33,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -137,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Log.d("Max year:", String.valueOf(currentYear) + " " + String.valueOf((currentQuarter)));
 
 
-        fakedMessageString = "B3%&J" + "Jon," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5," + "825103,";
+        fakedMessageString = "B3%&J" + "Jon," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5," + "825104,";
 
         List<Course> demoCourse = new ArrayList<Course>();
 
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if(text.equals("Start")){
             usersRecyclerView.setVisibility(View.VISIBLE);
             Nearby.getMessagesClient(this).subscribe(messageListener);
+
             Intent intent = new Intent(this, PublishMessageService.class);
             startService(intent);
             //Update userViewAdapter
@@ -210,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         userViewAdapter = new UsersViewAdapter(fellowUsers);
 
         usersRecyclerView.setAdapter(userViewAdapter);
+        usersRecyclerView.setVisibility(View.VISIBLE);
     }
 
 
@@ -272,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void unsubscribe() {
         Log.i(TAG, "Unsubscribing.");
-        Nearby.getMessagesClient(this).unsubscribe(messageListener);
+        getMessagesClient(this).unsubscribe(messageListener);
     }
 
     public MessageListener messageListener = new MessageListener() {
@@ -305,7 +310,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 String fellowStudentID = sMessage.substring(k3, k4);
                 List<Course> fellowStudentMutualCourse = new ArrayList<Course>();
                 Log.d("FellowStudentID", fellowStudentID);
-
                 for (int i = k4 + 1; i < sMessage.length(); i++) {
                     int oldI = i;
                     String fellowStudentSubjectAndNumber = "";
@@ -313,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     String fellowStudentYear = "";
                     String fellowStudentSize = "";
                     Course fellowStudentThisCourse;
+
 
                     while (true) {
                         if (sMessage.charAt(i) == '%') {   //subject and course divider
@@ -334,10 +339,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             fellowStudentSize = sMessage.substring(oldI, i);
                             fellowStudentThisCourse = new Course(Integer.parseInt(fellowStudentYear),
                                     fellowStudentQuarter.toLowerCase(Locale.ROOT), fellowStudentSubjectAndNumber.toLowerCase(Locale.ROOT), fellowStudentSize);
+
                             for (Course myCourse : myCourses) {
                                 if (myCourse.equals(fellowStudentThisCourse)) {
                                     fellowStudentMutualCourse.add(fellowStudentThisCourse);
-                                    Log.e("Add course", fellowStudentThisCourse.courseToString());
                                 }
                             }
                             break;
@@ -363,14 +368,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 if (fellowStudentMutualCourse.isEmpty()==false) {
                     Log.d("in first if", "v");
-                    int age = 0;
-                    for (Course c : fellowStudentMutualCourse){
-                        int cQuarter = c.quarterToNum();
-                        int cYear = c.getYear();
-
-                        age += currentQuarter - cQuarter + (currentYear - cYear)*6;
-
-                    }
                     if(waved) fellowStudentName += new String(Character.toChars(0x1F44B));
                     User user = new User(fellowStudentName, fellowStudentPhotoURL, fellowStudentMutualCourse, Integer.parseInt(fellowStudentID), waved);
                     boolean alreadyAdded = false;
