@@ -15,8 +15,8 @@ import java.util.HashMap;
 
 public class resumeActivity extends AppCompatActivity {
 
-    HashMap<String, ArrayList<User>> userLists;
-    ArrayList<User> currList;
+    HashMap<String, ArrayList<Integer>> userLists;
+    ArrayList<Integer> currList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +24,7 @@ public class resumeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resume);
         Intent intent = getIntent();
         userLists = intent.getParcelableExtra("userLists");
-        Bundle temp = intent.getBundleExtra("temp");
-        currList = (ArrayList<User>) temp.getSerializable("currList");
+        currList = intent.getIntegerArrayListExtra("currList");
     }
 
     public void onNewClicked(View view)
@@ -36,10 +35,8 @@ public class resumeActivity extends AppCompatActivity {
     public void onResumeClicked(View view)
     {
         Intent intent = new Intent(this, chooseListActivity.class);
-        Bundle temp = new Bundle();
-        temp.putSerializable("temp", currList);
         intent.putExtra("userLists", userLists);
-        intent.putExtra("currList", temp);
+        intent.putIntegerArrayListExtra("currList", currList);
         startActivity(intent);
         finish();
     }

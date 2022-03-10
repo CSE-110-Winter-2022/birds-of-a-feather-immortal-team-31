@@ -16,8 +16,8 @@ import java.util.List;
 
 public class chooseListActivity extends AppCompatActivity {
 
-    HashMap<String, ArrayList<User>> userLists;
-    ArrayList<User> currList;
+    HashMap<String, ArrayList<Integer>> userLists;
+    ArrayList<Integer> currList;
     public RecyclerView keyRecyclerView;
     public RecyclerView.LayoutManager keyLayoutManager;
     public KeyViewAdapter keyViewAdapter;
@@ -28,8 +28,7 @@ public class chooseListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_list);
         Intent intent = getIntent();
         userLists = intent.getParcelableExtra("userLists");
-        Bundle temp = intent.getBundleExtra("temp");
-        currList = (ArrayList<User>) temp.getSerializable("currList");
+        currList = intent.getIntegerArrayListExtra("currList");
         keyViewAdapter = new KeyViewAdapter((List<String>) userLists.keySet());
         keyRecyclerView.setAdapter(keyViewAdapter);
         TextView textView = findViewById(R.id.choice);

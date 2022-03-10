@@ -2,7 +2,9 @@ package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -16,8 +18,8 @@ import java.util.List;
 
 public class saveUserActivity extends AppCompatActivity {
 
-    HashMap <String, ArrayList<User>> userLists;
-    ArrayList<User> currList;
+    HashMap <String, ArrayList<Integer>> userLists;
+    ArrayList<Integer> currList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public class saveUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_save_user);
         Intent intent = getIntent();
         userLists = intent.getParcelableExtra("userLists");
-        currList = intent.getParcelableExtra("currList");
+        currList = intent.getIntegerArrayListExtra("currList");
     }
 
     public void onDiscardClicked(View view)
@@ -35,13 +37,19 @@ public class saveUserActivity extends AppCompatActivity {
 
     public void onSaveClicked(View view)
     {
+        SharedPreferences preferences = getSharedPreferences("DATANAME", Context.MODE_PRIVATE);
+
         TextView nameView = findViewById(R.id.name);
-        String name = nameView.getText().toString();
+
+        SharedPreferences.Editor editor = preferences.edit();
+        String name = nameView.toString();
+
         while (userLists.containsKey(name))
         {
             Toast.makeText(this, "The name already exists, please enter another name", Toast.LENGTH_LONG).show();
-            name = nameView.getText().toString();
+            name = nameView.toString();
         }
+        editor.putString("NAME", name);
         userLists.put(name, currList);
         finish();
     }
