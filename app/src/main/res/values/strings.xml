@@ -15,4 +15,6 @@
         <item>Huge</item>
         <item>Gigantic</item>
     </string-array>
+
+    <string name="emoji">&#128400;</string>
 </resources>

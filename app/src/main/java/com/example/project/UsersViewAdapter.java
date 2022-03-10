@@ -73,6 +73,7 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
             intent.putExtra("user_name", this.user.getName());
             intent.putExtra("user_photoURL", this.user.getPhotoURL());
             intent.putExtra("user_courses", (Serializable) this.user.getCourses());
+            intent.putExtra("user_id", String.valueOf(this.user.getId()));
             context.startActivity(intent);
         }
 

@@ -11,11 +11,11 @@ import java.util.Objects;
 @Entity(tableName = "users")
 public class User {
 
-    private int age;
+    @PrimaryKey
+    private int id;
 
-    @NonNull
-    @PrimaryKey(autoGenerate = true)
-    public int id;
+    private boolean waved;
+
 
     @NonNull
     @ColumnInfo(name = "name")
@@ -31,14 +31,16 @@ public class User {
     public List<Course> courses;
 
 
-    public User (String name, String photoURL, List<Course> courses, int age){
+    public User (String name, String photoURL, List<Course> courses, int id, boolean waved){
         this.name = name;
 
         this.photoURL = photoURL;
 
         this.courses = courses;
 
-        this.age = age;
+        this.id = id;
+
+        this.waved = waved;
     }
 
     public String getName(){return this.name;}
@@ -47,8 +49,20 @@ public class User {
 
     public List<Course> getCourses(){return this.courses;}
 
-    public int getAge() {
-        return age;
+    public int getId() {
+        return this.id;
+    }
+
+    public boolean isWaved() {
+        return waved;
+    }
+
+    public void setWaved(boolean waved) {
+        this.waved = waved;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
     }
 
     @Override
@@ -56,11 +70,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && id == user.id && name.equals(user.name) && photoURL.equals(user.photoURL) && courses.equals(user.courses);
+        return id == user.id  && name.equals(user.name) && photoURL.equals(user.photoURL) && courses.equals(user.courses);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(age, id, name, photoURL, courses);
+        return Objects.hash(id, name, photoURL, courses);
     }
 }

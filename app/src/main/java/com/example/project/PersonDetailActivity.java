@@ -1,11 +1,17 @@
 package com.example.project;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +35,7 @@ public class PersonDetailActivity extends AppCompatActivity {
     protected Course demo1 = new Course(2018, "Fall", "CSE110", "tiny");
     protected Course demo2 = new Course(2019, "Winter", "CSE101", "medium");
 
+    Boolean alreadyWaved = false;
     Executor executor;
 
     @Override
@@ -41,8 +48,23 @@ public class PersonDetailActivity extends AppCompatActivity {
 
         String name = getIntent().getStringExtra("user_name");
         String url = getIntent().getStringExtra("user_photoURL");
+        String id = getIntent().getStringExtra("user_id");
         Log.e("url", url);
         List<Course> courses = (List<Course>) getIntent().getSerializableExtra("user_courses");
+
+        SharedPreferences preferences = getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+        String wavedUsers = preferences.getString("WavedUsers", null);
+
+        Button wave = (Button) findViewById(R.id.buttonWave);
+        if(wavedUsers!=null) {
+            for (int i = 0; i < wavedUsers.length(); i += 7) {
+                if (wavedUsers.substring(i, i + 6).equals(id)) {
+                    Log.d("WavedID", wavedUsers.substring(i, i + 6));
+                    wave.setBackgroundColor(Color.BLUE);
+                    alreadyWaved = true;
+                }
+            }
+        }
 
         TextView PersonDetailName = findViewById(R.id.PersonDetailName);
         PersonDetailName.setText(name);
@@ -66,11 +88,6 @@ public class PersonDetailActivity extends AppCompatActivity {
         imageView.setVisibility(View.VISIBLE);
 
 
-
-
-
-
-
         coursesRecyclerView = findViewById(R.id.courses_view);
 
         coursesLayoutManager = new LinearLayoutManager(this);
@@ -86,5 +103,26 @@ public class PersonDetailActivity extends AppCompatActivity {
 
     public void onBackButtonClicked(View view){
         finish();
+    }
+
+    public void onWaveButtonClicked(View view){
+        Button wave = (Button) findViewById(R.id.buttonWave);
+        if(!alreadyWaved) {
+            wave.setBackgroundColor(Color.BLUE);
+            SharedPreferences preferences = getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+            String wavedUsers = preferences.getString("WavedUsers", null);
+            String id = getIntent().getStringExtra("user_id");
+            if(wavedUsers == null) wavedUsers = id + ",";
+            else wavedUsers += id + ",";
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("WavedUsers", wavedUsers);
+            editor.apply();
+            Log.d("waved to", preferences.getString("WavedUsers", null));
+
+
+            Intent intent = new Intent(this, PublishMessageService.class);
+            startService(intent);
+        }
+
     }
 }

@@ -22,7 +22,7 @@
         android:layout_height="45dp"
         android:text="Name"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/courses_view"
+        app:layout_constraintBottom_toTopOf="@+id/buttonWave"
         app:layout_constraintEnd_toStartOf="@+id/imageViewPersonDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,5 +47,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/courses_view" />
+
+    <Button
+        android:id="@+id/buttonWave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="35dp"
+        android:text="@string/emoji"
+        android:textSize="30dp"
+        android:backgroundTint="@color/cardview_light_background"
+        android:onClick="onWaveButtonClicked"
+        app:layout_constraintBottom_toTopOf="@+id/courses_view"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewPersonDetail"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
