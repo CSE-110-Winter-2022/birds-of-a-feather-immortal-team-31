@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.project.MainActivity;
@@ -49,9 +50,9 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
         Course demo2 = new Course(2077, "winter", "CSE101", "small");
         Course demo3 = new Course(2020, "fall", "CSE2", "medium");
 
-        User user1 = new User("Luffy","",new ArrayList<Course>(), 17);
-        User user2 = new User("Zoro","",new ArrayList<Course>(), 20);
-        User user3 = new User("Nami","", new ArrayList<Course>(), 22);
+        User user1 = new User("Luffy","", User.coursesToString(new ArrayList<Course>()), 17, false);
+        User user2 = new User("Zoro","", User.coursesToString(new ArrayList<Course>()), 20, false);
+        User user3 = new User("Nami","", User.coursesToString(new ArrayList<Course>()), 22, false);
 
 
         user1.getCourses().add(demo1);
@@ -74,7 +75,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             activity.usersRecyclerView = activity.findViewById(R.id.users_view);
             activity.usersLayoutManager = new LinearLayoutManager(activity);
             activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
-            activity.userViewAdapter = new UsersViewAdapter(activity.fellowUsers);
+            activity.userViewAdapter = new UsersViewAdapter(ApplicationProvider.getApplicationContext(),activity.fellowUsers);
             activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
 
             int count = activity.userViewAdapter.getItemCount();

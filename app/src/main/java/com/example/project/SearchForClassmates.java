@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.example.project.model.Course;
 import com.example.project.model.User;
@@ -27,8 +28,8 @@ public class SearchForClassmates extends AppCompatActivity {
     protected Course demo2 = new Course(2019, "Winter", "CSE101", "medium");
 
     protected List<User> users = new ArrayList<User>();
-    protected User user1 = new User("Luffy","",courses, 17);
-    protected User user2 = new User("Zoro","",courses, 20);
+    protected User user1 = new User("Luffy","",User.coursesToString(courses), 17, false);
+    protected User user2 = new User("Zoro","",User.coursesToString(courses), 20, false);
 
 
 
@@ -40,14 +41,14 @@ public class SearchForClassmates extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         List<User> students = (List<User>) intent.getSerializableExtra("student");
 
-        students.add(new User("1", "URL", courses, 9));
+        students.add(new User("1", "URL",User.coursesToString(courses), 9, false));
 
         usersRecyclerView = findViewById(R.id.users_view);
 
         usersLayoutManager = new LinearLayoutManager(this);
         usersRecyclerView.setLayoutManager(usersLayoutManager);
 
-        userViewAdapter = new UsersViewAdapter(students);
+        userViewAdapter = new UsersViewAdapter(ApplicationProvider.getApplicationContext(),students);
         usersRecyclerView.setAdapter(userViewAdapter);
     }
 

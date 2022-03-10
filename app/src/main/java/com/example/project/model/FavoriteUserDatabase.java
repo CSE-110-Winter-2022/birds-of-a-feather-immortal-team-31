@@ -14,7 +14,7 @@ public abstract class FavoriteUserDatabase extends RoomDatabase {
 
     public static FavoriteUserDatabase singleton(Context context){
         if (singletonInstance == null) {
-            singletonInstance = Room.databaseBuilder(context, FavoriteUserDatabase.class, "users.db")
+            singletonInstance = Room.databaseBuilder(context, FavoriteUserDatabase.class, "favorite_users.db")
                     .allowMainThreadQueries()
                     .build();
         }

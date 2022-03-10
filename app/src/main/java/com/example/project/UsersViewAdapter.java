@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.test.core.app.ApplicationProvider;
 
 import com.example.project.model.FavoriteUserDatabase;
 import com.example.project.model.User;
@@ -20,14 +19,17 @@ import java.util.List;
 
 public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.ViewHolder>
 {
+    //Context to initialize the FavoriteStudentDatabase
+    private Context context;
     private List<User> users;
     //Database that stores favorite students
     private FavoriteUserDatabase db;
 
-    public UsersViewAdapter(List<User> users) {
+    public UsersViewAdapter(Context context,List<User> users) {
         super();
+        this.context = context;
         this.users = users;
-        db = FavoriteUserDatabase.singleton(ApplicationProvider.getApplicationContext());
+        db = FavoriteUserDatabase.singleton(this.context);
     }
 
     @NonNull
@@ -73,17 +75,18 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
 
             ButtonStar.setOnClickListener(new View.OnClickListener() {
 
-                //Change the favorite state of users and update the change on favorite students activity
+                //Onclick: change the favorite state of users and update the change on favorite students database
                 @Override
                 public void onClick(View view) {
                     if (ViewHolder.this.user.getStar()){
                         ((ImageButton) view).setImageResource(android.R.drawable.btn_star_big_off);
+                        ViewHolder.this.user.changeStar();
                         UsersViewAdapter.this.db.usersDao().delete(ViewHolder.this.user);
                     }else{
                         ((ImageButton) view).setImageResource(android.R.drawable.btn_star_big_on);
+                        ViewHolder.this.user.changeStar();
                         UsersViewAdapter.this.db.usersDao().insert(ViewHolder.this.user);
                     }
-                    ViewHolder.this.user.changeStar();
                 }
             });
         }

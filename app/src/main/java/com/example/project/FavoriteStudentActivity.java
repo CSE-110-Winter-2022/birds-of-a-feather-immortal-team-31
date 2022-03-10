@@ -6,7 +6,6 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.test.core.app.ApplicationProvider;
 
 import com.example.project.model.FavoriteUserDatabase;
 import com.example.project.model.User;
@@ -27,7 +26,7 @@ public class FavoriteStudentActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_students);
 
-        db = FavoriteUserDatabase.singleton(ApplicationProvider.getApplicationContext());
+        db = FavoriteUserDatabase.singleton(getApplicationContext());
         favorite_users = db.usersDao().getAll();
 
         usersRecyclerView = findViewById(R.id.star_view);
@@ -35,10 +34,9 @@ public class FavoriteStudentActivity extends AppCompatActivity
         usersLayoutManager = new LinearLayoutManager(this);
         usersRecyclerView.setLayoutManager(usersLayoutManager);
 
-        userViewAdapter = new UsersViewAdapter(favorite_users);
+        userViewAdapter = new UsersViewAdapter(getApplicationContext(),favorite_users);
 
         usersRecyclerView.setAdapter(userViewAdapter);
-
     }
 
     public void onBackButtonClicked(View view) {
