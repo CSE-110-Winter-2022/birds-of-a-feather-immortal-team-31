@@ -20,6 +20,7 @@ import com.example.project.R;
 import com.example.project.SortByRecencyComparator;
 import com.example.project.SortBySizeComparator;
 import com.example.project.UsersViewAdapter;
+import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
 import com.example.project.model.User;
 import com.google.android.gms.nearby.messages.Message;
@@ -100,6 +101,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
                 //assertTrue(recencyComparator.compare(user1, user2) == -1 || recencyComparator.compare(user1, user2) == 0);
                 assertEquals(recencyComparator.compare(user1, user2), -1);
             }
+            AppDatabase.setSingletonInstance(null);
         });
     }
 
@@ -138,7 +140,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
             assertEquals(1, sizeComparator.compare(user1, user2));
 
-
+            AppDatabase.setSingletonInstance(null);
 
         });
     }
@@ -172,6 +174,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             }
             List<Course> mutualCourses = activity.fellowUsers.get(0).getCourses();
             assertEquals(mutualCourses.get(0), myCourses.get(0));
+            AppDatabase.setSingletonInstance(null);
         });
     }
 
@@ -204,6 +207,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             }
 
             assertEquals(0, activity.fellowUsers.size());
+            AppDatabase.setSingletonInstance(null);
         });
     }
 

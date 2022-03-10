@@ -22,7 +22,9 @@ public abstract class AppDatabase extends RoomDatabase {
         return singletonInstance;
     }
 
-
+    public static void setSingletonInstance(AppDatabase singletonInstance) {
+        AppDatabase.singletonInstance = singletonInstance;
+    }
 
     public abstract CoursesDao coursesDao();
 }
