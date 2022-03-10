@@ -28,8 +28,10 @@ public class SearchForClassmates extends AppCompatActivity {
     protected Course demo2 = new Course(2019, "Winter", "CSE101", "medium");
 
     protected List<User> users = new ArrayList<User>();
-    protected User user1 = new User("Luffy","",User.coursesToString(courses), 17, false);
-    protected User user2 = new User("Zoro","",User.coursesToString(courses), 20, false);
+
+    protected User user1 = new User("Luffy","",User.coursesToString(courses), 17, false, false);
+    protected User user2 = new User("Zoro","",User.coursesToString(courses), 20, false, false);
+
 
 
 
@@ -41,7 +43,7 @@ public class SearchForClassmates extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         List<User> students = (List<User>) intent.getSerializableExtra("student");
 
-        students.add(new User("1", "URL",User.coursesToString(courses), 9, false));
+        //students.add(new User("1", "URL",User.coursesToString(courses), 9, false, false));
 
         usersRecyclerView = findViewById(R.id.users_view);
 

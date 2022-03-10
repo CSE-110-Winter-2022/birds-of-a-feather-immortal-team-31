@@ -1,5 +1,7 @@
 package com.example.project;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +35,7 @@ import com.google.android.gms.nearby.messages.MessageListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
 
@@ -43,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     //TextView textView;
     private static final int RC_SIGN_IN = 1;
 
-
-    private MessageListener messageListener;
 
     public int currentYear;
     public int currentQuarter;
@@ -59,13 +60,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected Course demo2 = new Course(2021, "winter", "CSE101", "medium");
     protected Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
-    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 17, false);
-    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 20, false);
-    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 22, false);
+
+    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, true, false);
+    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false);
+    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false);
+
 
     public List<User> fellowUsers = new ArrayList<User>();
     private TextView txtHelloWorld;
     private Spinner spinnerTextSize;
+
+    public List<Course> myCourses;
+    public List<Course> demoCourse;
+
+    public String myId;
+    public String fakedMessageString;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +89,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         this.user2.addCourse(demo2);
         this.user3.addCourse(demo3);
 
+
         fellowUsers.add(user1);
         fellowUsers.add(user2);
         fellowUsers.add(user3);
+
 
         //TODO: implement a filter that only add users whp share the same classes with me
 
@@ -110,28 +122,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 startActivityForResult(intent,RC_SIGN_IN);
             }
         });
-        /*
-        GoogleSignInClient mGoogleSignInClient;
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-
-
-        if(account == null){
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            Intent switchActivites = new Intent(this, SignIn.class);
-
-        }
-
-         */
 
 
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        List<Course> myCourses = db.coursesDao().getAll();
+        myCourses = db.coursesDao().getAll();
 
         String usernameFinal = preferences.getString("NAME", null);
         String photourlFinal = preferences.getString("URL", null);
+        myId = preferences.getString("ID", null);
+        myId = "848985";
+        Log.e("My ID", " "+ myId);
 
         currentYear = db.coursesDao().getMaxYear();
 
@@ -145,13 +145,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Log.d("Max year:", String.valueOf(currentYear) + " " + String.valueOf((currentQuarter)));
 
 
-        String messageString = "B3%&J";
-        messageString += usernameFinal + "," + photourlFinal + ",";
-        for (Course c : myCourses) {
-            messageString += c.courseToString();
-        }
-
-        String FakedMessageString = "B3%&J" + "Bjarki," + "demoURL,";
+        fakedMessageString = "B3%&J" + "Jon," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5," + "825103,";
 
         List<Course> demoCourse = new ArrayList<Course>();
 
@@ -161,120 +155,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
         for (Course c2 : demoCourse) {
-            FakedMessageString += c2.courseToString();
+            fakedMessageString += c2.courseToString();
         }
-
-        Message databaseMessage = new Message(messageString.getBytes());
-        Nearby.getMessagesClient(this).publish(databaseMessage);
-
-        MessageListener messageListener = new MessageListener() {
-            @Override
-            public void onFound(@NonNull Message message) {
-                String sMessage = new String(message.getContent());
-                Log.d("Message found", sMessage.substring(0,5));
-                if (sMessage.substring(0, 5).equals("B3%&J")) { //authentication key of message
-
-                    int k1 = 5;
-                    while (true) {
-                        k1++;
-                        if (sMessage.charAt(k1) == ',') break;
-
-                    }
-                    String fellowStudentName = sMessage.substring(5, k1);
-
-                    int k2 = k1;
-                    while (true) {
-                        k2++;
-                        if (sMessage.charAt(k2) == ',') break;
-                    }
-                    String fellowStudentPhotoURL = sMessage.substring(k1, k2);
-
-                    List<Course> fellowStudentMutualCourse = new ArrayList<Course>();
-
-                    for (int i = k2 + 1; i < sMessage.length(); i++) {
-                        int oldI = i;
-                        String fellowStudentSubjectAndNumber = "";
-                        String fellowStudentQuarter = "";
-                        String fellowStudentYear = "";
-                        String fellowStudentSize = "";
-                        Course fellowStudentThisCourse;
-
-                        while (true)
-                        {
-                            if (sMessage.charAt(i) == '%')
-                            {   //subject and course divider
-                                fellowStudentSubjectAndNumber = sMessage.substring(oldI, i);
-                                oldI = i + 1;
-                                i++;
-                                continue;
-                            }
-                            else if (sMessage.charAt(i) == '^')
-                            {   //Quarter divider
-                                fellowStudentQuarter = sMessage.substring(oldI, i);
-                                oldI = i + 1;
-                                i++;
-                                continue;
-                            }
-                            else if (sMessage.charAt(i) == '~')
-                            {   //year and course divider
-                                fellowStudentYear = sMessage.substring(oldI, i);
-                                oldI = i + 1;
-                                i++;
-                                continue;
-                            }
-                            else if (sMessage.charAt(i) == '$')
-                            {   // size divider
-                                fellowStudentSize = sMessage.substring(oldI, i);
-                                fellowStudentThisCourse = new Course(Integer.parseInt(fellowStudentYear),
-                                        fellowStudentQuarter, fellowStudentSubjectAndNumber, fellowStudentSize);
-                                for (Course myCourse : myCourses) {
-                                    if (myCourse.equals(fellowStudentThisCourse)) {
-                                        fellowStudentMutualCourse.add(fellowStudentThisCourse);
-                                    }
-                                }
-                                break;
-                            }
-                            else i++;
-                        }
-                    }
-                    if (!fellowStudentMutualCourse.isEmpty()) {
-                        int age = 0;
-                        for (Course c : fellowStudentMutualCourse){
-                            Log.d("Course", c.courseToString());
-                            int cQuarter = c.quarterToNum();
-                            int cYear = c.getYear();
-                            Log.d("in loop", "d");
-
-                            age += currentQuarter - cQuarter + (currentYear - cYear)*4;
-                            Log.d("Age", String.valueOf(age));
-                        }
-                        User user = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), age, false);
-                        fellowUsers.add(user);
-                    }
-                }
-            }
-        };
-
-        Nearby.getMessagesClient(this).subscribe(messageListener);
-
-        this.messageListener = new FakedMessageListener(messageListener, 60, FakedMessageString);
+        fakedMessageString += ":908654,848985,";
 
 
-        usersRecyclerView = findViewById(R.id.users_view);
+        //Nearby.getMessagesClient(this).subscribe(messageListener);
+        //Nearby.getMessagesClient(this).unsubscribe(messageListener);
 
-        usersLayoutManager = new LinearLayoutManager(this);
-        usersRecyclerView.setLayoutManager(usersLayoutManager);
-        /*
-        Collections.sort(fellowUsers, new Comparator<User>() {
-            @Override
-            public int compare(User user, User t1) {
-                return user.getAge() > t1.getAge() ? 1 : user.getAge() < t1.getAge() ? -1 : 0;
-            }
-        });
 
-         */
-        userViewAdapter = new UsersViewAdapter(getApplicationContext(),fellowUsers);
-        usersRecyclerView.setAdapter(userViewAdapter);
+        updateUserView();
 
         usersRecyclerView.setVisibility(View.INVISIBLE);
 
@@ -301,24 +191,41 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         if(text.equals("Start")){
             usersRecyclerView.setVisibility(View.VISIBLE);
-            Nearby.getMessagesClient(this).subscribe(this.messageListener);
-            //Update userViewAdapter
-            userViewAdapter.setFellowUsers(fellowUsers);
+            Nearby.getMessagesClient(this).subscribe(messageListener);
+            Intent intent = new Intent(this, PublishMessageService.class);
+            startService(intent);
 
-            usersRecyclerView.setAdapter(userViewAdapter);
+
+            this.messageListener = new FakedMessageListener(messageListener, 15, fakedMessageString);
+
+            //Update userViewAdapter
+            updateUserView();
 
             textView.setText("Stop");
         }
         else if (text.equals("Stop")){
-            Nearby.getMessagesClient(this).unsubscribe(this.messageListener);
+            unsubscribe();
+
             textView.setText("Start");
         }
     }
 
+
     //Onclick event of viewing favorite students
     public void onStarClicked(View view) {
-        Intent intent= new Intent(MainActivity.this, FavoriteStudentActivity.class);
+        Intent intent = new Intent(MainActivity.this, FavoriteStudentActivity.class);
         startActivity(intent);
+    }
+
+    private void updateUserView(){
+        usersRecyclerView = findViewById(R.id.users_view);
+
+        usersLayoutManager = new LinearLayoutManager(this);
+        usersRecyclerView.setLayoutManager(usersLayoutManager);
+
+        userViewAdapter = new UsersViewAdapter(getApplicationContext(),fellowUsers);
+
+        usersRecyclerView.setAdapter(userViewAdapter);
     }
 
 
@@ -358,19 +265,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         {
             case "recent":
                 Collections.sort(fellowUsers, new SortByRecencyComparator());
+                updateUserView();
                 break;
             case "small classes":
                 Collections.sort(fellowUsers, new SortBySizeComparator());
+                updateUserView();
                 break;
             default:
                 break;
         }
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
     public static MainActivity getMainActivity() {
@@ -386,4 +293,137 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public List<User> getFellowUsers(){
         return this.fellowUsers;
     }
+
+
+    private void unsubscribe() {
+        Log.i(TAG, "Unsubscribing.");
+        Nearby.getMessagesClient(this).unsubscribe(messageListener);
+    }
+
+    public MessageListener messageListener = new MessageListener() {
+        @Override
+        public void onFound(@NonNull Message message) {
+            boolean waved = false;
+            boolean stared = false;
+            String sMessage = new String(message.getContent());
+            Log.d("Message found", sMessage.substring(0,5));
+            if (sMessage.substring(0, 5).equals("B3%&J")) { //authentication key of message
+
+                int k1 = 5;
+                while (true) {
+                    k1++;
+                    if (sMessage.charAt(k1) == ',') break;
+
+                }
+                String fellowStudentName = sMessage.substring(5, k1);
+
+                int k2 = k1;
+                while (true) {
+                    k2++;
+                    if (sMessage.charAt(k2) == ',') break;
+                }
+                String fellowStudentPhotoURL = sMessage.substring(k1+1, k2);
+                //Log.d("fellowstudenturl", fellowStudentPhotoURL);
+
+                int k3 = k2 + 1;
+                int k4 = k3 + 6;
+
+                String fellowStudentID = sMessage.substring(k3, k4);
+                List<Course> fellowStudentMutualCourse = new ArrayList<Course>();
+                Log.d("FellowStudentID", fellowStudentID);
+
+                for (int i = k4 + 1; i < sMessage.length(); i++) {
+                    int oldI = i;
+                    String fellowStudentSubjectAndNumber = "";
+                    String fellowStudentQuarter = "";
+                    String fellowStudentYear = "";
+                    String fellowStudentSize = "";
+                    Course fellowStudentThisCourse;
+
+                    while (true) {
+                        if (sMessage.charAt(i) == '%') {   //subject and course divider
+                            fellowStudentSubjectAndNumber = sMessage.substring(oldI, i);
+                            oldI = i + 1;
+                            i++;
+                            continue;
+                        } else if (sMessage.charAt(i) == '^') {   //Quarter divider
+                            fellowStudentQuarter = sMessage.substring(oldI, i);
+                            oldI = i + 1;
+                            i++;
+                            continue;
+                        } else if (sMessage.charAt(i) == '~') {   //year and course divider
+                            fellowStudentYear = sMessage.substring(oldI, i);
+                            oldI = i + 1;
+                            i++;
+                            continue;
+                        } else if (sMessage.charAt(i) == '$') {   // size divider
+                            fellowStudentSize = sMessage.substring(oldI, i);
+                            fellowStudentThisCourse = new Course(Integer.parseInt(fellowStudentYear),
+                                    fellowStudentQuarter.toLowerCase(Locale.ROOT), fellowStudentSubjectAndNumber.toLowerCase(Locale.ROOT), fellowStudentSize);
+                            for (Course myCourse : myCourses) {
+                                if (myCourse.equals(fellowStudentThisCourse)) {
+                                    fellowStudentMutualCourse.add(fellowStudentThisCourse);
+                                    Log.e("Add course", fellowStudentThisCourse.courseToString());
+                                }
+                            }
+                            break;
+                        }
+                        if(sMessage.charAt(i) == ':') break;
+                        else i++;
+                    }
+                    if (sMessage.charAt(i) == ':'){
+                        Log.d("Checking ids", "jibbi");
+                        String fellowUsersWavedHands = sMessage.substring(i+1, sMessage.length());
+                        int j = i + 1;
+                        while(j < sMessage.length()){
+                            Log.d("ID", sMessage.substring(j, j+6));
+                            if(sMessage.substring(j, j+6).equals(myId)){
+                                waved = true;
+                                break;
+                            }
+                            j += 7;
+                        }
+                        break;
+                    }
+                }
+
+                if (fellowStudentMutualCourse.isEmpty()==false) {
+                    Log.d("in first if", "v");
+                    int age = 0;
+                    for (Course c : fellowStudentMutualCourse){
+                        int cQuarter = c.quarterToNum();
+                        int cYear = c.getYear();
+
+                        age += currentQuarter - cQuarter + (currentYear - cYear)*6;
+
+                    }
+                    if(waved) fellowStudentName += new String(Character.toChars(0x1F44B));
+                    User user = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), waved, stared);
+                    boolean alreadyAdded = false;
+                    Log.d("size of fellowusers", String.valueOf(fellowUsers.size()));
+                    for (User u : fellowUsers){
+                        if(u.equals(user)) {
+                            alreadyAdded = true;
+                            boolean oldWaveStatues = u.isWaved();
+                            if(oldWaveStatues == false & waved == true){
+                                user.setWaved(true);
+                                user.setName(fellowStudentName);
+                                updateUserView();
+                            }
+                        }
+                    }
+                    if(!alreadyAdded) {
+                        fellowUsers.add(user);
+                        Log.e("Waved", String.valueOf(user.isWaved()));
+                        updateUserView();
+                        Log.e("add user", "s");
+                        updateUserView();
+                    }
+
+                }
+            }
+
+        }
+
+    };
 }

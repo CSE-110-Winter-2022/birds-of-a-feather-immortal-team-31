@@ -40,6 +40,7 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
         String size = courses.get(position).getSize();
         String text = courseName + ", " + quarter + " " + String.valueOf(year) + " " + size;
         holder.courseView.setText(text);
+
     }
 
     @Override

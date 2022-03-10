@@ -8,15 +8,16 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(tableName = "users")
 public class User implements Serializable {
 
-    private int age;
+    @PrimaryKey
+    private int id;
 
-    @NonNull
-    @PrimaryKey(autoGenerate = true)
-    public int id;
+    private boolean waved;
+
 
     @NonNull
     @ColumnInfo(name = "star")
@@ -37,17 +38,20 @@ public class User implements Serializable {
     public String courses;
 
 
+
     //You should use a string as the parameter to input courses, the convert method is below
-    public User (String name, String photoURL, String courses, int age, boolean star){
+    public User (String name, String photoURL, String courses, int id, boolean waved, boolean star){
         this.name = name;
 
         this.photoURL = photoURL;
 
         this.courses = courses;
 
-        this.age = age;
-
         this.star = star;
+
+        this.id = id;
+
+        this.waved = waved;
     }
 
     public int getId(){return this.id;}
@@ -69,9 +73,14 @@ public class User implements Serializable {
         this.star = star;
     }
 
-    public int getAge() {
-        return age;
+    public boolean isWaved() {
+        return waved;
     }
+
+    public void setWaved(boolean waved) {
+        this.waved = waved;
+    }
+
 
     //Add or remove users from my "favorite"
     public void changeStar(){
@@ -98,7 +107,7 @@ public class User implements Serializable {
     }
 
     //Helper method to convert string back to courses
-    public static List<Course> stringToCourses(String coursesAsString){
+    public static List<Course> stringToCourses(String coursesAsString) {
         List<Course> stringToCourses = new ArrayList<Course>();
 
         for (int i = 0; i < coursesAsString.length(); i++) {
@@ -109,41 +118,49 @@ public class User implements Serializable {
             String fellowStudentSize = "";
             Course fellowStudentThisCourse;
 
-            while (true)
-            {
-                if (coursesAsString.charAt(i) == '%')
-                {   //subject and course divider
+            while (true) {
+                if (coursesAsString.charAt(i) == '%') {   //subject and course divider
                     fellowStudentSubjectAndNumber = coursesAsString.substring(oldI, i);
                     oldI = i + 1;
                     i++;
                     continue;
-                }
-                else if (coursesAsString.charAt(i) == '^')
-                {   //Quarter divider
+                } else if (coursesAsString.charAt(i) == '^') {   //Quarter divider
                     fellowStudentQuarter = coursesAsString.substring(oldI, i);
                     oldI = i + 1;
                     i++;
                     continue;
-                }
-                else if (coursesAsString.charAt(i) == '~')
-                {   //year and course divider
+                } else if (coursesAsString.charAt(i) == '~') {   //year and course divider
                     fellowStudentYear = coursesAsString.substring(oldI, i);
                     oldI = i + 1;
                     i++;
                     continue;
-                }
-                else if (coursesAsString.charAt(i) == '$')
-                {   // size divider
+                } else if (coursesAsString.charAt(i) == '$') {   // size divider
                     fellowStudentSize = coursesAsString.substring(oldI, i);
                     fellowStudentThisCourse = new Course(Integer.parseInt(fellowStudentYear),
                             fellowStudentQuarter, fellowStudentSubjectAndNumber, fellowStudentSize);
                     stringToCourses.add(fellowStudentThisCourse);
                     break;
-                }
-                else i++;
+                } else i++;
             }
         }
 
         return stringToCourses;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id  && name.equals(user.name) && photoURL.equals(user.photoURL) && courses.equals(user.courses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, photoURL, courses);
     }
 }

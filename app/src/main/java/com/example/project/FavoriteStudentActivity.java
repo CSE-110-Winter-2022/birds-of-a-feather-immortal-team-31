@@ -47,7 +47,7 @@ public class FavoriteStudentActivity extends AppCompatActivity
         for(User fellowUser: fellowUsers){
             for(User favorite_user:this.userViewAdapter.getUsers()){
                 //Should've been compared by id, but didn't work
-                if(fellowUser.getName().equals(favorite_user.getName())){
+                if(fellowUser.getId() == favorite_user.getId()){
                     fellowUser.setStar(favorite_user.getStar());
                 }
             }
