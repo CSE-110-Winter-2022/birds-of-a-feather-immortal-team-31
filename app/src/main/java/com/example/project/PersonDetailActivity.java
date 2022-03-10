@@ -119,8 +119,10 @@ public class PersonDetailActivity extends AppCompatActivity {
             editor.apply();
             Log.d("waved to", preferences.getString("WavedUsers", null));
 
+            alreadyWaved = true;
 
             Intent intent = new Intent(this, PublishMessageService.class);
+            intent.putExtra("unpublish", "true");
             startService(intent);
         }
 

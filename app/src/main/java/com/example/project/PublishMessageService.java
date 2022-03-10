@@ -44,6 +44,16 @@ public class PublishMessageService extends Service {
         messageString += ":" + wavedHandsAll;
 
         Message databaseMessage = new Message(messageString.getBytes());
+
+        String unpublishStatus = intent.getStringExtra("unpublish");
+        if(unpublishStatus!=null) {
+            if (unpublishStatus.equals("true")) {
+                Nearby.getMessagesClient(this).unpublish(databaseMessage);
+                Nearby.getMessagesClient(this);
+
+                Log.d("unpublish message", unpublishStatus);
+            }
+        }
         Nearby.getMessagesClient(this).publish(databaseMessage);
         Log.d("Message published", "true");
         return startId;

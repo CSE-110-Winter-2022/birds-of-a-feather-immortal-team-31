@@ -2,6 +2,8 @@ package com.example.project;
 
 import static android.content.ContentValues.TAG;
 
+import static com.google.android.gms.nearby.Nearby.getMessagesClient;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +33,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -137,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Log.d("Max year:", String.valueOf(currentYear) + " " + String.valueOf((currentQuarter)));
 
 
-        fakedMessageString = "B3%&J" + "Jon," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5," + "825103,";
+        fakedMessageString = "B3%&J" + "Jon," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5," + "825104,";
 
         List<Course> demoCourse = new ArrayList<Course>();
 
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if(text.equals("Start")){
             usersRecyclerView.setVisibility(View.VISIBLE);
             Nearby.getMessagesClient(this).subscribe(messageListener);
+
             Intent intent = new Intent(this, PublishMessageService.class);
             startService(intent);
             //Update userViewAdapter
@@ -210,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         userViewAdapter = new UsersViewAdapter(fellowUsers);
 
         usersRecyclerView.setAdapter(userViewAdapter);
+        usersRecyclerView.setVisibility(View.VISIBLE);
     }
 
 
@@ -272,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void unsubscribe() {
         Log.i(TAG, "Unsubscribing.");
-        Nearby.getMessagesClient(this).unsubscribe(messageListener);
+        getMessagesClient(this).unsubscribe(messageListener);
     }
 
     public MessageListener messageListener = new MessageListener() {
