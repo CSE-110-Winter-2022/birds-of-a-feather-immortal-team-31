@@ -16,6 +16,8 @@ public class User {
 
     private boolean waved;
 
+    private int noCourses;
+
 
     @NonNull
     @ColumnInfo(name = "name")
@@ -31,7 +33,7 @@ public class User {
     public List<Course> courses;
 
 
-    public User (String name, String photoURL, List<Course> courses, int id, boolean waved){
+    public User (String name, String photoURL, List<Course> courses, int id, boolean waved, int noCourses){
         this.name = name;
 
         this.photoURL = photoURL;
@@ -41,6 +43,8 @@ public class User {
         this.id = id;
 
         this.waved = waved;
+
+        this.noCourses = noCourses;
     }
 
     public String getName(){return this.name;}
@@ -51,6 +55,10 @@ public class User {
 
     public int getId() {
         return this.id;
+    }
+
+    public int getNoCourses() {
+        return noCourses;
     }
 
     public boolean isWaved() {

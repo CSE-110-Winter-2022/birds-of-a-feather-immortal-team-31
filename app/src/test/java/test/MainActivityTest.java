@@ -1,5 +1,6 @@
 package test;
 
+import static com.example.project.model.AppDatabase.getSingletonInstance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -11,6 +12,7 @@ import android.widget.Spinner;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -25,6 +27,7 @@ import com.example.project.model.Course;
 import com.example.project.model.User;
 import com.google.android.gms.nearby.messages.Message;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,9 +57,9 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
         Course demo2 = new Course(2021, "winter", "CSE101", "medium");
         Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
-        User user1 = new User("Luffy","",new ArrayList<Course>(), 179876, true);
-        User user2 = new User("Zoro","",new ArrayList<Course>(), 200879, false);
-        User user3 = new User("Nami","", new ArrayList<Course>(), 226542, false);
+        User user1 = new User("Luffy","",new ArrayList<Course>(), 179876, true, 4);
+        User user2 = new User("Zoro","",new ArrayList<Course>(), 200879, false, 5);
+        User user3 = new User("Nami","", new ArrayList<Course>(), 226542, false,3);
 
 
         user1.getCourses().add(demo1);
@@ -101,7 +104,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
                 //assertTrue(recencyComparator.compare(user1, user2) == -1 || recencyComparator.compare(user1, user2) == 0);
                 assertEquals(recencyComparator.compare(user1, user2), -1);
             }
-            AppDatabase.setSingletonInstance(null);
+            //AppDatabase.setSingletonInstance(null);
         });
     }
 
@@ -176,7 +179,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             }
             List<Course> mutualCourses = activity.fellowUsers.get(0).getCourses();
             assertEquals(mutualCourses.get(0), myCourses.get(0));
-            AppDatabase.setSingletonInstance(null);
+            //AppDatabase.setSingletonInstance(null);
         });
     }
 
@@ -210,8 +213,13 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             }
 
             assertEquals(0, activity.fellowUsers.size());
-            AppDatabase.setSingletonInstance(null);
+            //AppDatabase.setSingletonInstance(null);
         });
+    }
+
+    @After
+    public void after() {
+        AppDatabase.getSingletonInstance().close();
     }
 
 
