@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import static com.google.android.gms.nearby.Nearby.getMessagesClient;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -214,14 +215,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         String text = textView.getText().toString();
 
         if (text.equals("Start")) {
+            BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (mBluetoothAdapter == null) {
+                // Device does not support Bluetooth
+            } else if (!mBluetoothAdapter.isEnabled()) {
+                Toast.makeText(this, "Please turn on Bluetooth",
+                        Toast.LENGTH_LONG).show();
+            } else {
 
-            Nearby.getMessagesClient(this).subscribe(messageListener);
-            spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-            publish();
-            subscribe();
-            if (mockMode) mockFunctions();
-            textView.setText("Stop");
+                Nearby.getMessagesClient(this).subscribe(messageListener);
+                spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+
+                publish();
+                subscribe();
+                if (mockMode) mockFunctions();
+                textView.setText("Stop");
+            }
         } else if (text.equals("Stop")) {
             unpublish();
             unsubscribe();
