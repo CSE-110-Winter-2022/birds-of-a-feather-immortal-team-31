@@ -140,7 +140,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
             assertEquals(1, sizeComparator.compare(user1, user2));
 
-            AppDatabase.setSingletonInstance(null);
+            //AppDatabase.setSingletonInstance(null);
 
         });
     }
@@ -160,6 +160,8 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
             List<Course> myCourses = new ArrayList<Course>();
             myCourses.add(testCourse1);
+
+            activity.fellowUsers = new ArrayList<User>();
 
             String FakedMessageString = "B3%&J" + "Jon," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5," + "825103,";
             activity.myCourses = myCourses;
@@ -190,6 +192,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             List<Course> testCourses = new ArrayList<Course>();
             testCourses.add(testCourse1);
             testCourses.add(testCourse2);
+            activity.fellowUsers = new ArrayList<User>();
 
             List<Course> myCourses = new ArrayList<Course>();
             myCourses.add(testCourse3);
