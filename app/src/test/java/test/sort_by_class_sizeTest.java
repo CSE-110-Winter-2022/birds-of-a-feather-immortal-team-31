@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.project.SortBySizeComparator;
+import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
 import com.example.project.model.User;
 
@@ -29,10 +30,9 @@ public class sort_by_class_sizeTest {
         Course demo2 = new Course(2021, "winter", "CSE101", "medium");
         Course demo3 = new Course(2020, "fall", "CSE2", "small");
 
-
-        User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, true, false);
-        User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false);
-        User user3 = new User("Nami","", User.coursesToString( new ArrayList<Course>()), 226542, false, false);
+        User user1 = new User("Luffy","", User.coursesToString(new ArrayList<Course>()), 179876, true,false);
+        User user2 = new User("Zoro","", User.coursesToString(new ArrayList<Course>()), 200879, false, false);
+        User user3 = new User("Nami","", User.coursesToString(new ArrayList<Course>()), 226542, false, false);
 
 
         user1.getCourses().add(demo1);
@@ -53,6 +53,7 @@ public class sort_by_class_sizeTest {
         SortBySizeComparator k = new SortBySizeComparator();
         double a=k.SizeHelper(fellowUsers.get(0).getCourses());
         assertEquals(a,1.51,0.01);
+        AppDatabase.setSingletonInstance(null);
 
     }
 }

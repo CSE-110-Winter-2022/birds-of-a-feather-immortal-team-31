@@ -14,19 +14,21 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.project.FakedMessageListener;
 import com.example.project.MainActivity;
 import com.example.project.R;
 import com.example.project.SortByRecencyComparator;
 import com.example.project.SortBySizeComparator;
 import com.example.project.UsersViewAdapter;
+import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
 import com.example.project.model.User;
+import com.google.android.gms.nearby.messages.Message;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,14 +50,12 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
 
         Course demo1 = new Course(2020, "spring", "CSE110", "tiny");
-        Course demo2 = new Course(2077, "winter", "CSE101", "small");
-        Course demo3 = new Course(2020, "fall", "CSE2", "medium");
-
+        Course demo2 = new Course(2021, "winter", "CSE101", "medium");
+        Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
         User user1 = new User("Luffy","", User.coursesToString(new ArrayList<Course>()), 179876, true,false);
         User user2 = new User("Zoro","", User.coursesToString(new ArrayList<Course>()), 200879, false, false);
         User user3 = new User("Nami","", User.coursesToString(new ArrayList<Course>()), 226542, false, false);
-
 
 
         user1.getCourses().add(demo1);
@@ -78,7 +78,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             activity.usersRecyclerView = activity.findViewById(R.id.users_view);
             activity.usersLayoutManager = new LinearLayoutManager(activity);
             activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
-            activity.userViewAdapter = new UsersViewAdapter(ApplicationProvider.getApplicationContext(),activity.fellowUsers);
+            activity.userViewAdapter = new UsersViewAdapter(ApplicationProvider.getApplicationContext(),fellowUsers);
             activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
 
             int count = activity.userViewAdapter.getItemCount();
@@ -100,10 +100,11 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
                 //assertTrue(recencyComparator.compare(user1, user2) == -1 || recencyComparator.compare(user1, user2) == 0);
                 assertEquals(recencyComparator.compare(user1, user2), -1);
             }
+            AppDatabase.setSingletonInstance(null);
         });
     }
 
-    /*
+
     @Test
     public void sortSizeCorrectly(){
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
@@ -112,7 +113,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             activity.usersRecyclerView = activity.findViewById(R.id.users_view);
             activity.usersLayoutManager = new LinearLayoutManager(activity);
             activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
-            activity.userViewAdapter = new UsersViewAdapter(activity.fellowUsers);
+            activity.userViewAdapter = new UsersViewAdapter(ApplicationProvider.getApplicationContext(),fellowUsers);
             activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
 
             int count = activity.userViewAdapter.getItemCount();
@@ -131,27 +132,26 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             User user1 = activity.userViewAdapter.getUserAtIndex(0);
             User user2 = activity.userViewAdapter.getUserAtIndex(1);
 
-            assertEquals(sizeComparator.compare(user1, user2), -1);
-            user1 = activity.userViewAdapter.getUserAtIndex(1);
-            user2 = activity.userViewAdapter.getUserAtIndex(2);
+            assertEquals(-1, sizeComparator.compare(user1, user2));
+            user1 = activity.userViewAdapter.getUserAtIndex(2);
+            user2 = activity.userViewAdapter.getUserAtIndex(1);
 
 
-            assertEquals(sizeComparator.compare(user1, user2), 1);
+            assertEquals(1, sizeComparator.compare(user1, user2));
 
-
+            AppDatabase.setSingletonInstance(null);
 
         });
     }
-    */
 
-    /*
+
     @Test
-    public void nearbyTest(){
+    public void nearbyTestMutualCourses(){
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
-            Course testCourse1 = new Course(2020, "spring", "CSE110", "tiny");
-            Course testCourse2 = new Course(2021, "winter", "CSE101", "medium");
+            Course testCourse1 = new Course(2020, "spring", "cse110", "tiny");
+            Course testCourse2 = new Course(2021, "winter", "cse101", "medium");
             List<Course> testCourses = new ArrayList<Course>();
             testCourses.add(testCourse1);
             testCourses.add(testCourse2);
@@ -159,20 +159,58 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             List<Course> myCourses = new ArrayList<Course>();
             myCourses.add(testCourse1);
 
-            String FakedMessageString = "B3%&J" + "Bjarki," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5,";
-            activity.fellowUsers = null;
+            String FakedMessageString = "B3%&J" + "Jon," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5," + "825103,";
             activity.myCourses = myCourses;
             for (Course c2 : testCourses) {
                 FakedMessageString += c2.courseToString();
             }
-            activity.messageListener = new FakedMessageListener(activity.messageListener, 1, FakedMessageString);
-            System.out.println(activity.fellowUsers.size()+ "jibbi");
+            Message message = new Message(FakedMessageString.getBytes(StandardCharsets.UTF_8));
+            activity.messageListener.onFound(message);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             List<Course> mutualCourses = activity.fellowUsers.get(0).getCourses();
             assertEquals(mutualCourses.get(0), myCourses.get(0));
+            AppDatabase.setSingletonInstance(null);
         });
     }
 
-     */
+    @Test
+    public void nearbyTestNoMutualCourses(){
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            Course testCourse1 = new Course(2020, "spring", "cse110", "tiny");
+            Course testCourse2 = new Course(2021, "winter", "cse101", "medium");
+            Course testCourse3 = new Course(2019, "winter", "cse101", "medium");
+            List<Course> testCourses = new ArrayList<Course>();
+            testCourses.add(testCourse1);
+            testCourses.add(testCourse2);
+
+            List<Course> myCourses = new ArrayList<Course>();
+            myCourses.add(testCourse3);
+
+            String FakedMessageString = "B3%&J" + "Jon," + "https://photos.app.goo.gl/PizS3MAD4QCqGRNs5," + "825103,";
+            activity.myCourses = myCourses;
+            for (Course c2 : testCourses) {
+                FakedMessageString += c2.courseToString();
+            }
+            Message message = new Message(FakedMessageString.getBytes(StandardCharsets.UTF_8));
+            activity.messageListener.onFound(message);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            assertEquals(0, activity.fellowUsers.size());
+            AppDatabase.setSingletonInstance(null);
+        });
+    }
+
+
 
 
     // implementation of AdapterView
@@ -195,7 +233,6 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 }
 
