@@ -24,14 +24,14 @@ public class SignIn extends AppCompatActivity{
         TextView usernameView = findViewById(R.id.editTextName);
         TextView URLView = findViewById(R.id.editTextURL);
 
-        String id = "848985";
-        /*
+        String id;
+
         if(preferences.getString("ID", null) == null) {
             id = String.valueOf((int) (Math.random()*1000000.0));
         }
         else id = preferences.getString("ID", null);
 
-         */
+
         Log.d("ID", id);
 
         //myid = 848985

@@ -47,7 +47,7 @@ public class PersonDetailActivity extends AppCompatActivity {
     public Boolean alreadyWaved = false;
     Executor executor;
 
-    private static final int TTL_IN_SECONDS = 20; // Three minutes.
+    private static final int TTL_IN_SECONDS = 600; // Three minutes.
 
     private static final Strategy PUB_SUB_STRATEGY = new Strategy.Builder()
             .setTtlSeconds(TTL_IN_SECONDS).build();
