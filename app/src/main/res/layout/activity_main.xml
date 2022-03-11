@@ -19,20 +19,21 @@
         android:id="@+id/buttonOpenHistory"
         android:layout_width="191dp"
         android:layout_height="59dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
         android:onClick="onButtonOpenHistoryClicked"
         android:text="Input new classes"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/Search_for_classmates"
         android:layout_width="163dp"
         android:layout_height="44dp"
-        android:layout_marginTop="78dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="39dp"
         android:onClick="onSearchForClassmatesClicked"
         android:text="Start"
@@ -40,7 +41,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/users_view"
@@ -50,17 +52,17 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Search_for_classmates" />
+        app:layout_constraintTop_toBottomOf="@+id/MyFavorite"
+        app:layout_constraintVertical_bias="0.543" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="41dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonOpenHistory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -73,11 +75,28 @@
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="75dp"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/users_view"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/MyFavorite"
+        android:layout_width="67dp"
+        android:layout_height="57dp"
+        android:background="@android:drawable/btn_star"
+        android:onClick="onStarClicked"
+        android:text="View"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.163"
+        app:layout_constraintTop_toBottomOf="@+id/Search_for_classmates"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

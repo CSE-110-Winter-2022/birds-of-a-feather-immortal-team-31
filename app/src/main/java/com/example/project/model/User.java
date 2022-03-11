@@ -5,13 +5,15 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 @Entity(tableName = "users")
-public class User {
+public class User implements Serializable {
 
     private int age;
+
+    public boolean star;
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -39,6 +41,8 @@ public class User {
         this.courses = courses;
 
         this.age = age;
+
+        this.star = false;
     }
 
     public String getName(){return this.name;}
@@ -47,20 +51,17 @@ public class User {
 
     public List<Course> getCourses(){return this.courses;}
 
+    //Get the state of favorite of this user
+    public boolean getStar(){
+        return this.star;
+    }
+
     public int getAge() {
         return age;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return age == user.age && id == user.id && name.equals(user.name) && photoURL.equals(user.photoURL) && courses.equals(user.courses);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(age, id, name, photoURL, courses);
+    //Add or remove users from my "favorite"
+    public void changeStar(){
+        this.star = !this.star;
     }
 }
