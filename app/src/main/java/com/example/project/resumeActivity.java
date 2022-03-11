@@ -17,16 +17,11 @@ import java.util.HashMap;
 
 public class resumeActivity extends AppCompatActivity {
 
-    HashMap<String, ArrayList<Integer>> userLists;
-    ArrayList<Integer> currList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resume);
         Intent intent = getIntent();
-        userLists = (HashMap<String, ArrayList<Integer>>) intent.getSerializableExtra("userLists");
-        currList = intent.getIntegerArrayListExtra("currList");
     }
 
     public void onNewClicked(View view)
@@ -37,8 +32,6 @@ public class resumeActivity extends AppCompatActivity {
     public void onResumeClicked(View view)
     {
         Intent intent = new Intent(this, chooseListActivity.class);
-        intent.putExtra("userLists", userLists);
-        intent.putIntegerArrayListExtra("currList", currList);
         startActivity(intent);
         finish();
     }

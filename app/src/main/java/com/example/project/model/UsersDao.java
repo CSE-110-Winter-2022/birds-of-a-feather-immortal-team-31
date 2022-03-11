@@ -21,4 +21,7 @@ public interface UsersDao {
     @Transaction
     @Query("SELECT * FROM users")
     List<User> getAll();
+
+    @Query("SELECT * FROM users WHERE session is session")
+    List<User> sessions(String session);
 }

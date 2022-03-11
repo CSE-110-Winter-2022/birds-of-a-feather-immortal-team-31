@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project.model.FavoriteUserDatabase;
 import com.example.project.model.User;
 
 import java.util.ArrayList;
@@ -20,8 +21,9 @@ import java.util.List;
 
 public class chooseListActivity extends AppCompatActivity {
 
-    HashMap<String, ArrayList<Integer>> userLists;
-    ArrayList<Integer> currList;
+    private FavoriteUserDatabase db1;
+    List<User> userList;
+    List<String> sessionList;
     public RecyclerView keyRecyclerView;
     public RecyclerView.LayoutManager keyLayoutManager;
     public KeyViewAdapter keyViewAdapter;
@@ -30,15 +32,18 @@ public class chooseListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_list);
-        Intent intent = getIntent();
-        userLists = (HashMap<String, ArrayList<Integer>>) intent.getSerializableExtra("userLists");
-        currList = intent.getIntegerArrayListExtra("currList");
+        db1 = FavoriteUserDatabase.singleton(this);
+        userList = db1.usersDao().getAll();
+        for (User i: userList)
+        {
+            sessionList.add(i.session);
+        }
 
         keyRecyclerView = findViewById(R.id.lists_view);
         keyLayoutManager = new LinearLayoutManager(this);
         keyRecyclerView.setLayoutManager(keyLayoutManager);
 
-        keyViewAdapter = new KeyViewAdapter(new ArrayList<String>(userLists.keySet()));
+        keyViewAdapter = new KeyViewAdapter(sessionList);
         keyRecyclerView.setAdapter(keyViewAdapter);
     }
 
@@ -46,15 +51,17 @@ public class chooseListActivity extends AppCompatActivity {
     {
         TextView textView = findViewById(R.id.choice);
         String choice = textView.getText().toString();
-        while (!userLists.containsKey(choice))
+        if (!sessionList.contains(choice))
         {
-            Toast.makeText(getApplicationContext(),"Data does not exist",Toast.LENGTH_LONG).show();
-            Intent intent1 = new Intent (this, chooseListActivity.class);
-            intent1.putIntegerArrayListExtra("currList",currList);
-            intent1.putExtra("userLists", userLists);
-            startActivity(intent1);
+            Toast.makeText(getApplicationContext(),"Data does not exist, please enter another name and try again",Toast.LENGTH_LONG).show();
         }
-        currList = userLists.get(choice);
-        finish();
+        else
+        {
+            SharedPreferences preferences = getSharedPreferences("USERCHOICE", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("choice", choice);
+            finish();
+        }
+
     }
 }

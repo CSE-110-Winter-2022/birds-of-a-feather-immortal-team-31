@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project.model.FavoriteUserDatabase;
 import com.example.project.model.User;
 
 import java.util.ArrayList;
@@ -18,36 +19,46 @@ import java.util.List;
 
 public class saveUserActivity extends AppCompatActivity {
 
-    HashMap <String, ArrayList<Integer>> userLists;
-    ArrayList<Integer> currList;
-
+    private FavoriteUserDatabase db1;
+    List<User> userList;
+    List<String> sessionList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_user);
-        Intent intent = getIntent();
-        userLists = (HashMap<String, ArrayList<Integer>>) intent.getSerializableExtra("userLists");
-        currList = intent.getIntegerArrayListExtra("currList");
+        db1 = FavoriteUserDatabase.singleton(this);
+        userList = db1.usersDao().getAll();
+        for (User i : userList)
+        {
+            sessionList.add(i.session);
+        }
     }
 
     public void onDiscardClicked(View view)
     {
-        finish();
+        SharedPreferences preferences = getSharedPreferences("DATANAME", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("NAME", "discard");finish();
     }
 
     public void onSaveClicked(View view)
     {
-        SharedPreferences preferences = getSharedPreferences("DATANAME", Context.MODE_PRIVATE);
         TextView nameView = findViewById(R.id.name);
-        SharedPreferences.Editor editor = preferences.edit();
         String name = nameView.getText().toString();
-        while (userLists.containsKey(name))
+        if (sessionList.contains(name))
         {
             Toast.makeText(this, "The name already exists, please enter another name", Toast.LENGTH_LONG).show();
-            name = nameView.getText().toString();
         }
-        editor.putString("NAME", name);
-        userLists.put(name, currList);
-        finish();
+        else if (name.equals("discard"))
+        {
+            Toast.makeText(this, "discard is a keyword that cannot be used", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            SharedPreferences preferences = getSharedPreferences("DATANAME", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("NAME", name);
+            finish();
+        }
     }
 }
