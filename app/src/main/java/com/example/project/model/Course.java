@@ -10,10 +10,12 @@ import java.util.Objects;
 
 @Entity (tableName = "courses")
 public class Course implements Serializable {
-
+/*
     @NonNull
     @PrimaryKey(autoGenerate = true)
     public int id;
+
+ */
 
     @NonNull
     @ColumnInfo(name = "year")
@@ -25,6 +27,7 @@ public class Course implements Serializable {
 
 
     @NonNull
+    @PrimaryKey
     @ColumnInfo(name = "course")
     public String subjectAndNumber;
 
@@ -53,9 +56,13 @@ public class Course implements Serializable {
 
     public String getSize() {return size;}
 
+    /*
+
     public int getId() {
         return id;
     }
+
+     */
 
     @Override
     public boolean equals(Object o) {
@@ -67,7 +74,7 @@ public class Course implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, year, quarter, subjectAndNumber, size);
+        return Objects.hash(year, quarter, subjectAndNumber, size);
     }
 
     public String courseToString(){

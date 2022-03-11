@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity(tableName = "users")
 public class User {
@@ -50,4 +51,16 @@ public class User {
         return age;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age && id == user.id && name.equals(user.name) && photoURL.equals(user.photoURL) && courses.equals(user.courses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(age, id, name, photoURL, courses);
+    }
 }
