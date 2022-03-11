@@ -100,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         fellowUsers.add(user2);
         fellowUsers.add(user3);
 
+        for (User i: fellowUsers)
+        {
+            fellowUsersId.add(i.id);
+        }
+        userLists.put("data1", fellowUsersId);
+
         SharedPreferences preferences = getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
         String username = preferences.getString("NAME", null);
         String photourl = preferences.getString("URL", null);
@@ -173,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         demoCourse.add(demo1);
         demoCourse.add(demo2);
         demoCourse.add(demo3);
+
+
 
         for (Course c2 : demoCourse) {
             FakedMessageString += c2.courseToString();
@@ -333,7 +341,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         String text = textView.getText().toString();
 
         if(text.equals("Start")){
-
             // Ask for resuming previous sessions or not
             Intent intent = new Intent (this, resumeActivity.class);
             intent.putExtra("userLists", userLists);
@@ -405,7 +412,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             default:
                 break;
         }
-
     }
 
     @Override

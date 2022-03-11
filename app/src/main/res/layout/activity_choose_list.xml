@@ -23,13 +23,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lists_view"
-        android:layout_width="408dp"
-        android:layout_height="466dp"
-        android:layout_marginBottom="36dp"
+        android:layout_width="403dp"
+        android:layout_height="393dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choice" />
 
     <EditText
         android:id="@+id/choice"
@@ -38,12 +40,27 @@
         android:layout_marginStart="102dp"
         android:layout_marginTop="38dp"
         android:layout_marginEnd="99dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="10dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/lists_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview" />
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="156dp"
+        android:layout_marginBottom="32dp"
+        android:onClick="onConfirmClicked"
+        android:text="confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lists_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

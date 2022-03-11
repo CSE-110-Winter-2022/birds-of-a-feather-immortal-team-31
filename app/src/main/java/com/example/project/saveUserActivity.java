@@ -26,7 +26,7 @@ public class saveUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_user);
         Intent intent = getIntent();
-        userLists = intent.getParcelableExtra("userLists");
+        userLists = (HashMap<String, ArrayList<Integer>>) intent.getSerializableExtra("userLists");
         currList = intent.getIntegerArrayListExtra("currList");
     }
 
@@ -38,16 +38,13 @@ public class saveUserActivity extends AppCompatActivity {
     public void onSaveClicked(View view)
     {
         SharedPreferences preferences = getSharedPreferences("DATANAME", Context.MODE_PRIVATE);
-
         TextView nameView = findViewById(R.id.name);
-
         SharedPreferences.Editor editor = preferences.edit();
-        String name = nameView.toString();
-
+        String name = nameView.getText().toString();
         while (userLists.containsKey(name))
         {
             Toast.makeText(this, "The name already exists, please enter another name", Toast.LENGTH_LONG).show();
-            name = nameView.toString();
+            name = nameView.getText().toString();
         }
         editor.putString("NAME", name);
         userLists.put(name, currList);
