@@ -1,5 +1,8 @@
 package com.example.project;
 
+import static android.content.ContentValues.TAG;
+import static com.google.android.gms.nearby.Nearby.getMessagesClient;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,9 +22,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.PublishCallback;
+import com.google.android.gms.nearby.messages.PublishOptions;
+import com.google.android.gms.nearby.messages.Strategy;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -37,6 +46,14 @@ public class PersonDetailActivity extends AppCompatActivity {
 
     Boolean alreadyWaved = false;
     Executor executor;
+
+    private static final int TTL_IN_SECONDS = 20; // Three minutes.
+
+    private static final Strategy PUB_SUB_STRATEGY = new Strategy.Builder()
+            .setTtlSeconds(TTL_IN_SECONDS).build();
+
+    public String messageString;
+    Message databaseMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +138,47 @@ public class PersonDetailActivity extends AppCompatActivity {
 
             alreadyWaved = true;
 
-            Intent intent = new Intent(this, PublishMessageService.class);
-            intent.putExtra("unpublish", "true");
-            startService(intent);
+            String usernameFinal = preferences.getString("NAME", null);
+            String photourlFinal = preferences.getString("URL", null);
+            String myId = preferences.getString("ID", null);
+            myId = "848985";
+
+            String wavedHandsAll = preferences.getString("WavedUsers", null);
+
+            messageString = "B3%&J";
+            messageString += usernameFinal + "," + photourlFinal + "," + myId + ",";
+
+            AppDatabase db = AppDatabase.singleton(getApplicationContext());
+            List <Course > myCourses = db.coursesDao().getAll();
+
+            for (Course c : myCourses) {
+                messageString += c.courseToString();
+            }
+            messageString += ":" + wavedHandsAll;
+
+            databaseMessage = new Message(messageString.getBytes());
+            publish();
         }
 
+    }
+
+    private void publish() {
+        Log.i(TAG, "Publishing");
+        PublishOptions options = new PublishOptions.Builder()
+                .setStrategy(PUB_SUB_STRATEGY)
+                .setCallback(new PublishCallback() {
+                    @Override
+                    public void onExpired() {
+                        super.onExpired();
+                        Log.i(TAG, "No longer publishing");
+                    }
+                }).build();
+
+
+        getMessagesClient(this).publish(databaseMessage, options)
+                .addOnFailureListener(e -> {
+                    Log.e("Fail", ":(");
+                });
+        Log.d("database message from person detail Activity" , new String(databaseMessage.getContent()));
     }
 }

@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project"
         android:usesCleartextTraffic="true">
-        <service
-            android:name=".PublishMessageService"></service>
+
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="AIzaSyCAyre3t3c7W5G1Z_KhWOjjSUFFB8agnRw" />
+
 
         <activity
             android:name=".ProfileActivity"
@@ -21,10 +24,6 @@
         <activity
             android:name=".SignIn"
             android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.nearby.messages.API_KEY"
-            android:value="AIzaSyCAyre3t3c7W5G1Z_KhWOjjSUFFB8agnRw" />
 
         <activity
             android:name=".SearchForClassmates"
