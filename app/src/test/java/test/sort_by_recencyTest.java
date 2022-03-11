@@ -9,6 +9,7 @@ import com.example.project.model.AppDatabase;
 import com.example.project.model.Course;
 import com.example.project.model.User;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +54,11 @@ public class sort_by_recencyTest {
         SortByRecencyComparator k = new SortByRecencyComparator();
         int a=k.RecencyHelper(fellowUsers.get(0).getCourses());
         assertEquals(a,4);
+        AppDatabase.setSingletonInstance(null);
+    }
+
+    @After
+    public void destroy(){
         AppDatabase.setSingletonInstance(null);
     }
 }

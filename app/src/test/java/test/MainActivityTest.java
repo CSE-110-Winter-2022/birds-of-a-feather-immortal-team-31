@@ -24,6 +24,7 @@ import com.example.project.model.Course;
 import com.example.project.model.User;
 import com.google.android.gms.nearby.messages.Message;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -233,6 +234,11 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
+    @After
+    public void destroy(){
+        AppDatabase.setSingletonInstance(null);
     }
 }
 
