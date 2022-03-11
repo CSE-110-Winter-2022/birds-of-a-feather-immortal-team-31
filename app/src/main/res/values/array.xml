@@ -2,8 +2,10 @@
 <resources>
 
     <string-array name="font_sizes">
+        <item>most mutual classes (default) </item>
         <item>recent</item>
         <item>small classes</item>
+
     </string-array>
 
 </resources>

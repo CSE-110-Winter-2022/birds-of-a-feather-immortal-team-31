@@ -44,7 +44,7 @@ public class PersonDetailActivity extends AppCompatActivity {
     protected Course demo1 = new Course(2018, "Fall", "CSE110", "tiny");
     protected Course demo2 = new Course(2019, "Winter", "CSE101", "medium");
 
-    Boolean alreadyWaved = false;
+    public Boolean alreadyWaved = false;
     Executor executor;
 
     private static final int TTL_IN_SECONDS = 20; // Three minutes.
@@ -55,6 +55,13 @@ public class PersonDetailActivity extends AppCompatActivity {
     public String messageString;
     Message databaseMessage;
 
+    public String name;
+    public String url;
+    public String id;
+    public String wavedUsers;
+
+    public List<Course> courses;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +70,11 @@ public class PersonDetailActivity extends AppCompatActivity {
         data.add(demo1);
         data.add(demo2);
 
-        String name = getIntent().getStringExtra("user_name");
-        String url = getIntent().getStringExtra("user_photoURL");
-        String id = getIntent().getStringExtra("user_id");
+        name = getIntent().getStringExtra("user_name");
+        url = getIntent().getStringExtra("user_photoURL");
+        id = getIntent().getStringExtra("user_id");
         Log.e("url", url);
-        List<Course> courses = (List<Course>) getIntent().getSerializableExtra("user_courses");
+        courses = (List<Course>) getIntent().getSerializableExtra("user_courses");
 
         SharedPreferences preferences = getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
         String wavedUsers = preferences.getString("WavedUsers", null);
@@ -127,7 +134,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         if(!alreadyWaved) {
             wave.setBackgroundColor(Color.BLUE);
             SharedPreferences preferences = getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
-            String wavedUsers = preferences.getString("WavedUsers", null);
+            wavedUsers = preferences.getString("WavedUsers", null);
             String id = getIntent().getStringExtra("user_id");
             if(wavedUsers == null) wavedUsers = id + ",";
             else wavedUsers += id + ",";
