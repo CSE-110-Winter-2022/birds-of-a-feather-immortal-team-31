@@ -31,14 +31,16 @@ public class SignIn extends AppCompatActivity{
         }
         else id = preferences.getString("ID", null);
 
+        String username = usernameView.getText().toString();
+        String url = URLView.getText().toString();
 
         Log.d("ID", id);
 
         //myid = 848985
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("NAME", usernameView.toString());
-        editor.putString("URL", URLView.toString());
+        editor.putString("NAME", username);
+        editor.putString("URL", url);
         editor.putString("ID", id);
         editor.apply();
         finish();
