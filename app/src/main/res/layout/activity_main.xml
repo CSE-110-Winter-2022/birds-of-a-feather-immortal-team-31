@@ -25,7 +25,10 @@
         android:id="@+id/Search_for_classmates"
         android:layout_width="163dp"
         android:layout_height="44dp"
-        android:layout_marginTop="40dp"
+
+
+        android:layout_marginTop="50dp"
+
         android:layout_marginBottom="39dp"
         android:onClick="onSearchForClassmatesClicked"
         android:text="Start"
@@ -38,8 +41,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/users_view"
-        android:layout_width="416dp"
-        android:layout_height="258dp"
+        android:layout_width="410dp"
+        android:layout_height="286dp"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
@@ -67,9 +70,11 @@
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="75dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="28dp"
+
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/users_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +94,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.163"
         app:layout_constraintTop_toBottomOf="@+id/Search_for_classmates"/>
+
+    <Button
+        android:id="@+id/buttonMockWave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="mock wave"
+        android:onClick="onMockWaveButtonClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonOpenHistory" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

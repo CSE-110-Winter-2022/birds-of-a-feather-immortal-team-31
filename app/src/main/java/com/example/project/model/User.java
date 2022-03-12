@@ -18,6 +18,8 @@ public class User implements Serializable {
 
     private boolean waved;
 
+    private int noCourses;
+
 
     @NonNull
     @ColumnInfo(name = "star")
@@ -40,7 +42,10 @@ public class User implements Serializable {
 
 
     //You should use a string as the parameter to input courses, the convert method is below
-    public User (String name, String photoURL, String courses, int id, boolean waved, boolean star){
+
+
+    public User (String name, String photoURL, String courses, int id, boolean waved, boolean star, int noCourses){
+
         this.name = name;
 
         this.photoURL = photoURL;
@@ -52,6 +57,8 @@ public class User implements Serializable {
         this.id = id;
 
         this.waved = waved;
+
+        this.noCourses = noCourses;
     }
 
     public int getId(){return this.id;}
@@ -71,6 +78,10 @@ public class User implements Serializable {
     //Set the state of favorite of this user
     public void setStar(boolean star){
         this.star = star;
+    }
+
+    public int getNoCourses() {
+        return noCourses;
     }
 
     public boolean isWaved() {
