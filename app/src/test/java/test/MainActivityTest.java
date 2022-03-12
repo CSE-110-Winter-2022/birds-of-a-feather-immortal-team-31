@@ -1,8 +1,6 @@
 package test;
 
-import static com.example.project.model.AppDatabase.getSingletonInstance;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +10,6 @@ import android.widget.Spinner;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Database;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -231,6 +228,39 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             //AppDatabase.setSingletonInstance(null);
         });
     }
+    /*
+    @Test
+    public void favoriteStudentsTest(){
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            activity.usersRecyclerView = activity.findViewById(R.id.users_view);
+            activity.usersLayoutManager = new LinearLayoutManager(activity);
+            activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
+
+            activity.userViewAdapter = new UsersViewAdapter(ApplicationProvider.getApplicationContext(),fellowUsers);
+
+            activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
+
+            int count = activity.userViewAdapter.getItemCount();
+
+            View row = activity.usersRecyclerView.getLayoutManager().findViewByPosition(0);
+
+            TextView star1 = row.findViewById(R.id.star);
+
+            star1.performClick();
+
+            User user1 = activity.userViewAdapter.getUserAtIndex(0);
+
+            ActivityScenario<FavoriteStudentActivity> scenarioF = ActivityScenario.launch(FavoriteStudentActivity.class);
+            scenarioF.moveToState(Lifecycle.State.CREATED);
+            scenarioF.onActivity(activityF -> {
+                User user2 = activityF.userViewAdapter.getUserAtIndex(0);
+
+                assertEquals(user1, user2);
+            });
+        });
+    }*/
 
     @After
     public void after() {
@@ -255,6 +285,7 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
                 break;
         }
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
