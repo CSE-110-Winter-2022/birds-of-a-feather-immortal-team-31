@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
 
-    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, true, false, 6);
-    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false, 2);
-    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false, 4);
+    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, false, false, 6);
+    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false, 4);
+    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false, 2);
 
 
     public User jon = new User("Jon", "k", User.coursesToString(new ArrayList<Course>()), 824536, false, false, 3);
@@ -332,8 +332,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     //Set method for BDD scenario test
-    public void setFellowUsers(List<User> fellowUsers){
+    public void setFellowUsers(List<User> fellowUsers) {
         this.fellowUsers = fellowUsers;
+    }
 
    
 
@@ -357,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void unsubscribe() {
         Log.i(TAG, "Unsubscribing.");
         Nearby.getMessagesClient(this).unsubscribe(messageListener);
-
+    }
     private void publish() {
         Log.i(TAG, "Publishing");
         PublishOptions options = new PublishOptions.Builder()
@@ -382,6 +383,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Log.i(TAG, "Unpublishing.");
         Nearby.getMessagesClient(this).unpublish(databaseMessage);
 
+    }
+
+    public List<User> getFellowUsers() {
+        return fellowUsers;
     }
 
     public MessageListener messageListener = new MessageListener() {

@@ -98,8 +98,10 @@ public class PersonDetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Bitmap bmp = BitmapFactory.decodeStream(new java.net.URL("https://photos.google.com/share/AF1QipPXZ1OjS5OrnEiMwQM148V32RLUGJqHOCx2JcgWPCI5wPGDSafHQ6iHBJg3eXkbzA/photo/AF1QipOvyH2ciDKs-mt0FlMm9xLZjqIjrGzTqCcunhbg?key=NDNXZ1RGd3hKb1F6TER4YlJnVDAwSkV1TzlhMDFR").openStream());
-                    imageView.setImageBitmap(bmp);
+                    Bitmap bmp = BitmapFactory.decodeStream(new java.net.URL("" + "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg").openStream());
+                    runOnUiThread(() -> {
+                        imageView.setImageBitmap(bmp);
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("error", "in bitmapping");
