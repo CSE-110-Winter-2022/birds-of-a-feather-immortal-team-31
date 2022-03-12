@@ -3,15 +3,10 @@ package com.example.project;
 import static android.content.ContentValues.TAG;
 import static com.google.android.gms.nearby.Nearby.getMessagesClient;
 
-import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
-import android.content.pm.PackageManager;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -26,10 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -200,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-        Button buttonRequest = findViewById(R.id.permission_button);
+        /*Button buttonRequest = findViewById(R.id.permission_button);
         buttonRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     requestStoragePermission();
                 }
             }
-        });
+        });*/
     }
 
 
@@ -597,7 +589,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         messageListener.onFound(new Message(fakedMessageString.getBytes(StandardCharsets.UTF_8)));
     }
 
-    private void requestStoragePermission() {
+   /* private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
@@ -636,7 +628,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         }
     }
-
+*/
     public void onLoadClicked(View view)
     {
         Intent newIntent = new Intent(this, LoadSessionActivity.class);
