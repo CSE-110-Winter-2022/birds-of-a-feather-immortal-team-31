@@ -5,11 +5,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity(tableName = "users")
-public class User {
+public class User implements Serializable {
 
     @PrimaryKey
     private int id;
@@ -20,6 +22,10 @@ public class User {
 
 
     @NonNull
+    @ColumnInfo(name = "star")
+    public boolean star;
+
+    @NonNull
     @ColumnInfo(name = "name")
     public String name;
 
@@ -28,17 +34,25 @@ public class User {
     @ColumnInfo(name = "photoURL")
     public String photoURL;
 
+
     @NonNull
     @ColumnInfo(name = "courses")
-    public List<Course> courses;
+    public String courses;
 
 
-    public User (String name, String photoURL, List<Course> courses, int id, boolean waved, int noCourses){
+
+    //You should use a string as the parameter to input courses, the convert method is below
+
+
+    public User (String name, String photoURL, String courses, int id, boolean waved, boolean star, int noCourses){
+
         this.name = name;
 
         this.photoURL = photoURL;
 
         this.courses = courses;
+
+        this.star = star;
 
         this.id = id;
 
@@ -47,14 +61,23 @@ public class User {
         this.noCourses = noCourses;
     }
 
+    public int getId(){return this.id;}
+
     public String getName(){return this.name;}
 
     public String getPhotoURL(){return this.photoURL;}
 
-    public List<Course> getCourses(){return this.courses;}
+    // Output type: List<Course>
+    public List<Course> getCourses(){return stringToCourses(this.courses);}
 
-    public int getId() {
-        return this.id;
+    //Get the state of favorite of this user
+    public boolean getStar(){
+        return this.star;
+    }
+
+    //Set the state of favorite of this user
+    public void setStar(boolean star){
+        this.star = star;
     }
 
     public int getNoCourses() {
@@ -67,6 +90,72 @@ public class User {
 
     public void setWaved(boolean waved) {
         this.waved = waved;
+    }
+
+
+    //Add or remove users from my "favorite"
+    public void changeStar(){
+        this.star = !this.star;
+    }
+
+    //Helper method to convert courses into string
+    public static String coursesToString(List<Course> courses){
+        StringBuilder courseAsString = new StringBuilder();
+        for(Course course: courses){
+            courseAsString.append(course.courseToString());
+        }
+        return courseAsString.toString();
+    }
+
+    //Easier way to set this.courses
+    public void setCourses(List<Course> courses){
+        this.courses = coursesToString(courses);
+    }
+
+    //Add a course to this.courses and convert it into string
+    public void addCourse(Course course){
+        this.courses += course.courseToString();
+    }
+
+    //Helper method to convert string back to courses
+    public static List<Course> stringToCourses(String coursesAsString) {
+        List<Course> stringToCourses = new ArrayList<Course>();
+
+        for (int i = 0; i < coursesAsString.length(); i++) {
+            int oldI = i;
+            String fellowStudentSubjectAndNumber = "";
+            String fellowStudentQuarter = "";
+            String fellowStudentYear = "";
+            String fellowStudentSize = "";
+            Course fellowStudentThisCourse;
+
+            while (true) {
+                if (coursesAsString.charAt(i) == '%') {   //subject and course divider
+                    fellowStudentSubjectAndNumber = coursesAsString.substring(oldI, i);
+                    oldI = i + 1;
+                    i++;
+                    continue;
+                } else if (coursesAsString.charAt(i) == '^') {   //Quarter divider
+                    fellowStudentQuarter = coursesAsString.substring(oldI, i);
+                    oldI = i + 1;
+                    i++;
+                    continue;
+                } else if (coursesAsString.charAt(i) == '~') {   //year and course divider
+                    fellowStudentYear = coursesAsString.substring(oldI, i);
+                    oldI = i + 1;
+                    i++;
+                    continue;
+                } else if (coursesAsString.charAt(i) == '$') {   // size divider
+                    fellowStudentSize = coursesAsString.substring(oldI, i);
+                    fellowStudentThisCourse = new Course(Integer.parseInt(fellowStudentYear),
+                            fellowStudentQuarter, fellowStudentSubjectAndNumber, fellowStudentSize);
+                    stringToCourses.add(fellowStudentThisCourse);
+                    break;
+                } else i++;
+            }
+        }
+
+        return stringToCourses;
     }
 
     public void setName(@NonNull String name) {

@@ -104,6 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewHistory" />
 
+
     <Button
         android:id="@+id/buttonSaveHistory"
         android:layout_width="wrap_content"
@@ -135,7 +136,6 @@
         android:layout_height="40dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="50dp"
         android:gravity="right"
         android:text="Size:"
         android:textSize="30sp"
@@ -143,8 +143,8 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerSizes"
         app:layout_constraintHorizontal_bias="0.037"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNumber"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNumber"/>
+
 
     <Spinner
         android:id="@+id/spinnerQuarter"
@@ -164,5 +164,6 @@
         android:layout_marginEnd="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

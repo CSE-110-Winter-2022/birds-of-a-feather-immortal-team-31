@@ -29,9 +29,11 @@ import com.google.android.gms.nearby.messages.PublishCallback;
 import com.google.android.gms.nearby.messages.PublishOptions;
 import com.google.android.gms.nearby.messages.Strategy;
 
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -40,9 +42,6 @@ public class PersonDetailActivity extends AppCompatActivity {
     protected RecyclerView.LayoutManager coursesLayoutManager;
     protected CourseViewAdapter courseViewAdapter;
 
-    protected List<Course> data = new ArrayList<Course>();
-    protected Course demo1 = new Course(2018, "Fall", "CSE110", "tiny");
-    protected Course demo2 = new Course(2019, "Winter", "CSE101", "medium");
 
     public Boolean alreadyWaved = false;
     Executor executor;
@@ -67,8 +66,6 @@ public class PersonDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_detail);
 
-        data.add(demo1);
-        data.add(demo2);
 
         name = getIntent().getStringExtra("user_name");
         url = getIntent().getStringExtra("user_photoURL");
@@ -101,8 +98,10 @@ public class PersonDetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Bitmap bmp = BitmapFactory.decodeStream(new java.net.URL("https://photos.google.com/share/AF1QipPXZ1OjS5OrnEiMwQM148V32RLUGJqHOCx2JcgWPCI5wPGDSafHQ6iHBJg3eXkbzA/photo/AF1QipOvyH2ciDKs-mt0FlMm9xLZjqIjrGzTqCcunhbg?key=NDNXZ1RGd3hKb1F6TER4YlJnVDAwSkV1TzlhMDFR").openStream());
-                    imageView.setImageBitmap(bmp);
+                    Bitmap bmp = BitmapFactory.decodeStream(new java.net.URL("" + "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg").openStream());
+                    runOnUiThread(() -> {
+                        imageView.setImageBitmap(bmp);
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("error", "in bitmapping");
