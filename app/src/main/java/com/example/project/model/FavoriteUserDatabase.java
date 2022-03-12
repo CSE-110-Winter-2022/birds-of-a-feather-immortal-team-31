@@ -8,7 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 //Store all the students that I marked as favorite
-@Database(entities = {User.class}, version = 4, exportSchema = false)
+@Database(entities = {User.class}, version = 5, exportSchema = false)
 public abstract class FavoriteUserDatabase extends RoomDatabase {
     private static FavoriteUserDatabase singletonInstance;
 
@@ -16,6 +16,7 @@ public abstract class FavoriteUserDatabase extends RoomDatabase {
         if (singletonInstance == null) {
             singletonInstance = Room.databaseBuilder(context, FavoriteUserDatabase.class, "favorite_users.db")
                     .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
                     .build();
         }
 

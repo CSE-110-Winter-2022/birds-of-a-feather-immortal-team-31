@@ -2,10 +2,17 @@ package com.example.project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project.model.FavoriteUserDatabase;
 import com.example.project.model.User;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -68,13 +76,16 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
             implements View.OnClickListener
     {
         private final TextView userView;
+        private TextView textViewNoCourses = null;
         private User user;
         private final ImageButton ButtonStar = (ImageButton) itemView.findViewById(R.id.star);
+        private ImageView profilePhoto = (ImageView) itemView.findViewById(R.id.imageViewRecycleView);
 
         ViewHolder(View itemView) {
             super(itemView);
             this.userView = itemView.findViewById(R.id.users_row);
             itemView.setOnClickListener(this);
+            textViewNoCourses = itemView.findViewById(R.id.textViewNoCourses);
 
             ButtonStar.setOnClickListener(new View.OnClickListener() {
 
@@ -97,6 +108,27 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
         public void setUser(User user){
             this.user = user;
             this.userView.setText(user.getName());
+            textViewNoCourses.setText(String.valueOf(user.getNoCourses()));
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Bitmap bmp = BitmapFactory.decodeStream(new java.net.URL("" + "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg").openStream());
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                                     public void run() {
+                                                                         //runOnUiThread(() -> {
+                                                                         profilePhoto.setImageBitmap(bmp);
+                                                                         //});                            }
+                                                                     }
+                                                                 });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.e("error", "in bitmapping");
+                    }
+                }
+            });
+            profilePhoto.setVisibility(View.VISIBLE);
+
             if (this.user.getStar()){
                 ButtonStar.setImageResource(android.R.drawable.btn_star_big_on);
             }else{

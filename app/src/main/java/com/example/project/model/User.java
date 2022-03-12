@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity(tableName = "users")
+@Entity(tableName = "users", primaryKeys = {"id", "session"})
 public class User implements Serializable {
 
-    @PrimaryKey
+    //@PrimaryKey
     private int id;
 
     private boolean waved;
@@ -39,12 +39,16 @@ public class User implements Serializable {
     @ColumnInfo(name = "courses")
     public String courses;
 
+    @NonNull
+    @ColumnInfo(name = "session")
+    public String session;
+
 
 
     //You should use a string as the parameter to input courses, the convert method is below
 
 
-    public User (String name, String photoURL, String courses, int id, boolean waved, boolean star, int noCourses){
+    public User (String name, String photoURL, String courses, int id, boolean waved, boolean star, int noCourses, String session){
 
         this.name = name;
 
@@ -59,6 +63,8 @@ public class User implements Serializable {
         this.waved = waved;
 
         this.noCourses = noCourses;
+
+        this.session = session;
     }
 
     public int getId(){return this.id;}
@@ -173,5 +179,9 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, photoURL, courses);
+    }
+
+    public void setSession(String session) {
+        this.session = session;
     }
 }
