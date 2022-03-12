@@ -22,8 +22,6 @@ public abstract class UserDatabase extends RoomDatabase {
         return singletonInstance;
     }
 
-
-
     public abstract UsersDao usersDao();
 }
 

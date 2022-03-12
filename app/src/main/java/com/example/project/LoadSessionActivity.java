@@ -52,5 +52,6 @@ public class LoadSessionActivity extends AppCompatActivity {
             }
         }
         getMainActivity().setFellowUsers(fellowUsers);
+        finish();
     }
 }

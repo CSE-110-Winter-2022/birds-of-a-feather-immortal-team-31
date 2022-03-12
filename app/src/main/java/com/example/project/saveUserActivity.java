@@ -22,7 +22,7 @@ public class saveUserActivity extends AppCompatActivity {
 
     private UserDatabase db;
     List<User> userList;
-    List<String> sessionList;
+    List<String> sessionList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
