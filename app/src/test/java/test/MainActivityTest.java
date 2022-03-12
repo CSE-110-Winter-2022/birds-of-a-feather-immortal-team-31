@@ -55,9 +55,9 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
         Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
 
-        User user1 = new User("Luffy","", User.coursesToString(new ArrayList<Course>()), 179876, false,false, 7);
-        User user2 = new User("Zoro","", User.coursesToString(new ArrayList<Course>()), 200879, false, false, 6);
-        User user3 = new User("Nami","", User.coursesToString(new ArrayList<Course>()), 226542, false, false, 5);
+        User user1 = new User("Luffy","", User.coursesToString(new ArrayList<Course>()), 179876, false,false, 7, "");
+        User user2 = new User("Zoro","", User.coursesToString(new ArrayList<Course>()), 200879, false, false, 6, "");
+        User user3 = new User("Nami","", User.coursesToString(new ArrayList<Course>()), 226542, false, false, 5, "");
 
 
 
@@ -267,9 +267,6 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
         AppDatabase.getSingletonInstance().close();
 
     }
-
-
-
 
     // implementation of AdapterView
     @Override

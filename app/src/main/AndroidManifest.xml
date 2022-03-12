@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,11 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ChooseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SaveSessionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoadSessionActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
             android:value="AIzaSyCAyre3t3c7W5G1Z_KhWOjjSUFFB8agnRw" />
-
 
         <activity
             android:name=".ProfileActivity"
@@ -25,7 +34,6 @@
         <activity
             android:name=".SignIn"
             android:exported="false" />
-
         <activity
             android:name=".SearchForClassmates"
             android:exported="false" />
