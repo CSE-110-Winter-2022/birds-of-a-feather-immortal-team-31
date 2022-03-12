@@ -31,9 +31,9 @@ public class sort_by_class_sizeTest {
         Course demo2 = new Course(2021, "winter", "CSE101", "medium");
         Course demo3 = new Course(2020, "fall", "CSE2", "small");
 
-        User user1 = new User("Luffy","", User.coursesToString(new ArrayList<Course>()), 179876, true,false);
-        User user2 = new User("Zoro","", User.coursesToString(new ArrayList<Course>()), 200879, false, false);
-        User user3 = new User("Nami","", User.coursesToString(new ArrayList<Course>()), 226542, false, false);
+        User user1 = new User("Luffy","", User.coursesToString(new ArrayList<Course>()), 179876, true,false, "data1");
+        User user2 = new User("Zoro","", User.coursesToString(new ArrayList<Course>()), 200879, false, false, "data1");
+        User user3 = new User("Nami","", User.coursesToString(new ArrayList<Course>()), 226542, false, false, "data2");
 
 
         user1.getCourses().add(demo1);

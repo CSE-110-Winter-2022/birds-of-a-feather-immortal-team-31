@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.project">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +13,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project"
         android:usesCleartextTraffic="true">
-        <service
-            android:name=".PublishMessageService"></service>
+        <activity
+            android:name=".SaveSessionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".saveUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chooseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".resumeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SaveUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoadSessionActivity"
+            android:exported="false" />
+
+        <service android:name=".PublishMessageService" />
 
         <activity
             android:name=".ProfileActivity"

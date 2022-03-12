@@ -37,10 +37,12 @@ public class User implements Serializable {
     @ColumnInfo(name = "courses")
     public String courses;
 
-
+    @NonNull
+    @ColumnInfo(name = "session")
+    public String session;
 
     //You should use a string as the parameter to input courses, the convert method is below
-    public User (String name, String photoURL, String courses, int id, boolean waved, boolean star){
+    public User (String name, String photoURL, String courses, int id, boolean waved, boolean star, String session){
         this.name = name;
 
         this.photoURL = photoURL;
@@ -52,6 +54,8 @@ public class User implements Serializable {
         this.id = id;
 
         this.waved = waved;
+
+        this.session = session;
     }
 
     public int getId(){return this.id;}
@@ -81,6 +85,12 @@ public class User implements Serializable {
         this.waved = waved;
     }
 
+    public String getSession() {return session;}
+
+    public void setSession(String newSession)
+    {
+        this.session = newSession;
+    }
 
     //Add or remove users from my "favorite"
     public void changeStar(){

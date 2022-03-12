@@ -29,8 +29,8 @@ public class SearchForClassmates extends AppCompatActivity {
 
     protected List<User> users = new ArrayList<User>();
 
-    protected User user1 = new User("Luffy","",User.coursesToString(courses), 17, false, false);
-    protected User user2 = new User("Zoro","",User.coursesToString(courses), 20, false, false);
+    protected User user1 = new User("Luffy","",User.coursesToString(courses), 17, false, false , "data1");
+    protected User user2 = new User("Zoro","",User.coursesToString(courses), 20, false, false, "data2");
 
 
 

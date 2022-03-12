@@ -2,20 +2,27 @@ package com.example.project;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +45,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
-
+    private int STORAGE_PERMISSION_CODE=1;
     //An instance for other class to access this activity
     private static MainActivity mainActivity;
     SignInButton signInButton;
@@ -61,9 +68,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
 
-    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, true, false);
-    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false);
-    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false);
+    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, true, false, "data1");
+    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false, "data1");
+    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false, "data2");
 
 
     public List<User> fellowUsers = new ArrayList<User>();
@@ -175,6 +182,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        Button buttonRequest = findViewById(R.id.permission_button);
+        buttonRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(MainActivity.this, "You have already granted this permission!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    requestStoragePermission();
+                }
+            }
+        });
     }
 
     public void onButtonOpenHistoryClicked(View view){
@@ -190,6 +210,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         String text = textView.getText().toString();
 
         if(text.equals("Start")){
+
+            Intent newIntent = new Intent(this, LoadSessionActivity.class);
+            startActivity(newIntent);
+
             usersRecyclerView.setVisibility(View.VISIBLE);
             Nearby.getMessagesClient(this).subscribe(messageListener);
             Intent intent = new Intent(this, PublishMessageService.class);
@@ -204,6 +228,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             textView.setText("Stop");
         }
         else if (text.equals("Stop")){
+
+            Intent newIntent = new Intent(this, SaveSessionActivity.class);
+            startActivity(newIntent);
+
             unsubscribe();
 
             textView.setText("Start");
@@ -398,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                     }
                     if(waved) fellowStudentName += new String(Character.toChars(0x1F44B));
-                    User user = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), waved, stared);
+                    User user = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), waved, stared, "");
                     boolean alreadyAdded = false;
                     Log.d("size of fellowusers", String.valueOf(fellowUsers.size()));
                     for (User u : fellowUsers){
@@ -426,4 +454,45 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
 
     };
+    private void requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permission is needed because of this and that")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+
 }
