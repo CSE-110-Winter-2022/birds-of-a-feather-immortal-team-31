@@ -113,7 +113,7 @@ public class UsersViewAdapter extends RecyclerView.Adapter<UsersViewAdapter.View
                 @Override
                 public void run() {
                     try {
-                        Bitmap bmp = BitmapFactory.decodeStream(new java.net.URL("" + "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg").openStream());
+                        Bitmap bmp = BitmapFactory.decodeStream(new java.net.URL(user.photoURL).openStream());
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                                      public void run() {
                                                                          //runOnUiThread(() -> {

@@ -13,7 +13,7 @@
         android:layout_width="191dp"
         android:layout_height="59dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="64dp"
         android:onClick="onButtonOpenHistoryClicked"
         android:text="Input new classes"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,7 @@
         android:layout_height="44dp"
 
 
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
 
         android:layout_marginBottom="39dp"
         android:onClick="onSearchForClassmatesClicked"
@@ -113,7 +113,7 @@
         android:layout_height="57dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="45dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="68dp"
         android:onClick="onSaveSessionClicked"
         android:text="save\ndata"
         app:layout_constraintBottom_toBottomOf="parent"

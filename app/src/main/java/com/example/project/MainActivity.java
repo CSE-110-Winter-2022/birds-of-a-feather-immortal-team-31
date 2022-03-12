@@ -3,14 +3,20 @@ package com.example.project;
 import static android.content.ContentValues.TAG;
 import static com.google.android.gms.nearby.Nearby.getMessagesClient;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import android.content.pm.PackageManager;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,16 +77,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     protected List<Course> courses = new ArrayList<Course>();
     protected Course demo1 = new Course(2020, "spring", "cse110", "tiny");
-    protected Course demo2 = new Course(2021, "winter", "CSE101", "medium");
+    protected Course demo2 = new Course(2021, "winter", "cse101", "medium");
     protected Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
 
-    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, false, false, 6, "");
-    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false, 4, "");
-    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false, 2, "");
+    protected User user1 = new User("Luffy","https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg",User.coursesToString( new ArrayList<Course>()), 179876, false, false, 0, "");
+    protected User user2 = new User("Zoro","https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg",User.coursesToString( new ArrayList<Course>()), 200879, false, false, 0, "");
+    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false, 0, "");
 
 
-    public User jon = new User("Jon", "k", User.coursesToString(new ArrayList<Course>()), 824536, false, false, 3, "");
+    public User jon = new User("Jon", "https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg", User.coursesToString(new ArrayList<Course>()), 824536, false, false, 0, "");
 
 
     public List<User> fellowUsers = new ArrayList<User>();
@@ -88,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public List<Course> demoCourse;
 
     public String myId;
-    public String fakedMessageString;
+    public String fakedMessageString1;
+    public String fakedMessageString2;
     public String messageString;
 
     public Message databaseMessage;
@@ -114,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         //Dummy users for test purpose
         this.user1.addCourse(demo1);
+        this.user1.addCourse(demo2);
         this.user2.addCourse(demo2);
         this.user3.addCourse(demo3);
 
@@ -163,8 +174,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
 
-        fakedMessageString = "B3%&J";
-        fakedMessageString += jon.name + "," + jon.photoURL + "," + jon.getId() + ",";
+        fakedMessageString1 = "B3%&J";
+        fakedMessageString1 += jon.name + "," + jon.photoURL + "," + jon.getId() + ",";
 
         List<Course> demoCourse = new ArrayList<Course>();
 
@@ -174,10 +185,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
         for (Course c2 : demoCourse) {
-            fakedMessageString += c2.courseToString();
+            fakedMessageString1 += c2.courseToString();
         }
 
-        fakedMessageString += ":";
+        fakedMessageString1 += ":";
 
 
         updateUserView();
@@ -192,19 +203,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-        /*Button buttonRequest = findViewById(R.id.permission_button);
-        buttonRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity.this, "You have already granted this permission!",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    requestStoragePermission();
-                }
-            }
-        });*/
     }
 
 
@@ -245,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         } else if (text.equals("Stop")) {
             unpublish();
+            mockWaveButton.setVisibility(View.INVISIBLE);
             unsubscribe();
             textView.setText("Start");
         }
@@ -508,10 +507,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 if (!fellowStudentMutualCourse.isEmpty()) {
                     Log.d("in first if", "v");
 
-                    User noWaveUser = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), false, stared, fellowStudentNoCourses,"");
+                    User noWaveUser = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), false, stared, fellowStudentMutualCourse.size(),"");
                     if (waved) fellowStudentName += new String(Character.toChars(0x1F44B));
                     Log.d("fellowStudentName", fellowStudentName);
-                    User user = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), waved, stared, fellowStudentNoCourses,"");
+                    User user = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), waved, stared, fellowStudentMutualCourse.size(),"");
                     boolean alreadyAdded = false;
                     Log.d("size of fellowusers", String.valueOf(fellowUsers.size()));
                     for (User u : fellowUsers) {
@@ -567,8 +566,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void mockFunctions(){
-        fakedMessageString = "B3%&J";
-        fakedMessageString += jon.name + "," + jon.photoURL + "," + jon.getId() + ",";
+        fakedMessageString1 = "B3%&J";
+        fakedMessageString1 += jon.name + "," + jon.photoURL + "," + jon.getId() + ",";
 
         List<Course> demoCourse = new ArrayList<Course>();
 
@@ -577,19 +576,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //demoCourse.add(demo3);
 
         for (Course c2 : demoCourse) {
-            fakedMessageString += c2.courseToString();
+            fakedMessageString1 += c2.courseToString();
         }
-        fakedMessageString += ":908654,";
-        messageListener.onFound(new Message(fakedMessageString.getBytes(StandardCharsets.UTF_8)));
+        fakedMessageString1 += ":908654,";
+        messageListener.onFound(new Message(fakedMessageString1.getBytes(StandardCharsets.UTF_8)));
+
         mockWaveButton.setVisibility(View.VISIBLE);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                fakedMessageString2 = "B3%&J";
+                fakedMessageString2 += user1.name + "," + user1.photoURL + "," + user1.getId() + ",";
+
+                for(Course c3 : user1.getCourses()){
+                    fakedMessageString2 += c3.courseToString();
+                }
+                fakedMessageString2 += ":";
+                messageListener.onFound(new Message(fakedMessageString2.getBytes(StandardCharsets.UTF_8)));
+            }
+        }, 10000);
     }
 
     public void onMockWaveButtonClicked(View view){
-        fakedMessageString += myId + ",";
-        messageListener.onFound(new Message(fakedMessageString.getBytes(StandardCharsets.UTF_8)));
+        fakedMessageString1 += myId + ",";
+        messageListener.onFound(new Message(fakedMessageString1.getBytes(StandardCharsets.UTF_8)));
     }
 
-   /* private void requestStoragePermission() {
+    private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
@@ -628,7 +642,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         }
     }
-*/
+
     public void onLoadClicked(View view)
     {
         Intent newIntent = new Intent(this, LoadSessionActivity.class);
