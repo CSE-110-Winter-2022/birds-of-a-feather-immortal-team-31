@@ -238,9 +238,6 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
     }
 
-
-
-
     // implementation of AdapterView
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

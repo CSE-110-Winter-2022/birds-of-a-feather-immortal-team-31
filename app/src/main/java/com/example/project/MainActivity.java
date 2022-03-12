@@ -8,6 +8,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +44,7 @@ import com.google.android.gms.nearby.messages.Strategy;
 import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,12 +76,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected Course demo3 = new Course(2021, "fall", "CSE2", "small");
 
 
-    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, false, false, 6);
-    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false, 4);
-    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false, 2);
+    protected User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, false, false, 6, "");
+    protected User user2 = new User("Zoro","",User.coursesToString( new ArrayList<Course>()), 200879, false, false, 4, "");
+    protected User user3 = new User("Nami","guess", User.coursesToString( new ArrayList<Course>()), 226542, false, false, 2, "");
 
 
-    public User jon = new User("Jon", "k", User.coursesToString(new ArrayList<Course>()), 824536, false, false, 3);
+    public User jon = new User("Jon", "k", User.coursesToString(new ArrayList<Course>()), 824536, false, false, 3, "");
 
 
     public List<User> fellowUsers = new ArrayList<User>();
@@ -118,9 +122,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         this.user3.addCourse(demo3);
 
 
-        fellowUsers.add(user1);
-        fellowUsers.add(user2);
-        fellowUsers.add(user3);
+        //fellowUsers.add(user1);
+        //fellowUsers.add(user2);
+        //fellowUsers.add(user3);
 
 
 
@@ -130,12 +134,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
        
 
         jon.addCourse(demo1);
-        fellowUsers.add(jon);
+        //fellowUsers.add(jon);
 
          
 
 
         SharedPreferences preferences = getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+
+
         String username = preferences.getString("NAME", null);
         String photourl = preferences.getString("URL", null);
 
@@ -165,27 +171,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
         myCourses = db.coursesDao().getAll();
 
-        String usernameFinal = preferences.getString("NAME", null);
-        Log.d("usernameFinal", usernameFinal + " ");
-        String photourlFinal = preferences.getString("URL", null);
-        myId = preferences.getString("ID", null);
-        Log.e("My ID", " " + myId);
 
-        String wavedHandsAll = preferences.getString("WavedUsers", null);
-        if(wavedHandsAll == null) wavedHandsAll = "";
-
-        messageString = "B3%&J";
-        messageString += usernameFinal + "," + photourlFinal + "," + myId + ",";
-
-
-        for (Course c : myCourses) {
-            messageString += c.courseToString();
-        }
-        messageString += ":" + wavedHandsAll;
-
-        Log.d("messageString", messageString);
-
-        databaseMessage = new Message(messageString.getBytes());
 
 
         fakedMessageString = "B3%&J";
@@ -314,9 +300,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //TODO: add default option that sort students by their number of mutual courses
-
-
         String text = parent.getItemAtPosition(position).toString();
         // Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
         Log.d("position" , text);
@@ -334,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     //Set method for BDD scenario test
     public void setFellowUsers(List<User> fellowUsers) {
         this.fellowUsers = fellowUsers;
+        updateUserView();
     }
 
    
@@ -360,6 +344,28 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Nearby.getMessagesClient(this).unsubscribe(messageListener);
     }
     private void publish() {
+        SharedPreferences preferences = getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+        String usernameFinal = preferences.getString("NAME", null);
+        Log.d("usernameFinal", usernameFinal + " ");
+        String photourlFinal = preferences.getString("URL", null);
+        myId = preferences.getString("ID", null);
+        Log.e("My ID", " " + myId);
+
+        String wavedHandsAll = preferences.getString("WavedUsers", null);
+        if(wavedHandsAll == null) wavedHandsAll = "";
+
+        messageString = "B3%&J";
+        messageString += usernameFinal + "," + photourlFinal + "," + myId + ",";
+
+
+        for (Course c : myCourses) {
+            messageString += c.courseToString();
+        }
+        messageString += ":" + wavedHandsAll;
+
+        Log.d("messageString", messageString);
+
+        databaseMessage = new Message(messageString.getBytes());
         Log.i(TAG, "Publishing");
         PublishOptions options = new PublishOptions.Builder()
                 .setStrategy(PUB_SUB_STRATEGY)
@@ -417,6 +423,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     if (sMessage.charAt(k2) == ',') break;
                 }
                 String fellowStudentPhotoURL = sMessage.substring(k1 + 1, k2);
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Bitmap bmp = BitmapFactory.decodeStream(new java.net.URL("" + "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg").openStream());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Log.e("error", "in bitmapping");
+                        }
+                    }
+                });
                 //Log.d("fellowstudenturl", fellowStudentPhotoURL);
 
                 int k3 = k2 + 1;
@@ -489,10 +506,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 if (!fellowStudentMutualCourse.isEmpty()) {
                     Log.d("in first if", "v");
 
-                    User noWaveUser = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), false, stared, fellowStudentNoCourses);
+                    User noWaveUser = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), false, stared, fellowStudentNoCourses,"");
                     if (waved) fellowStudentName += new String(Character.toChars(0x1F44B));
                     Log.d("fellowStudentName", fellowStudentName);
-                    User user = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), waved, stared, fellowStudentNoCourses);
+                    User user = new User(fellowStudentName, fellowStudentPhotoURL, User.coursesToString(fellowStudentMutualCourse), Integer.parseInt(fellowStudentID), waved, stared, fellowStudentNoCourses,"");
                     boolean alreadyAdded = false;
                     Log.d("size of fellowusers", String.valueOf(fellowUsers.size()));
                     for (User u : fellowUsers) {
@@ -569,4 +586,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         fakedMessageString += myId + ",";
         messageListener.onFound(new Message(fakedMessageString.getBytes(StandardCharsets.UTF_8)));
     }
+    public void onLoadClicked(View view)
+    {
+        Intent newIntent = new Intent(this, LoadSessionActivity.class);
+        startActivity(newIntent);
+    }
+
+    public void onSaveSessionClicked(View view)
+    {
+        Intent newIntent = new Intent(this, SaveSessionActivity.class);
+        startActivity(newIntent);
+    }
+
 }
