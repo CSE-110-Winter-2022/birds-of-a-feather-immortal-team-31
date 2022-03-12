@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.project.FavoriteStudentActivity;
 import com.example.project.MainActivity;
 import com.example.project.R;
 import com.example.project.SortByRecencyComparator;
@@ -228,12 +230,15 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
             //AppDatabase.setSingletonInstance(null);
         });
     }
-    /*
+
     @Test
-    public void favoriteStudentsTest(){
+    public void WaveTest(){
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
+            User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, false, true, 6, "data1");
+            user1.setWaved(true);
+            assertTrue(user1.isWaved());
             activity.usersRecyclerView = activity.findViewById(R.id.users_view);
             activity.usersLayoutManager = new LinearLayoutManager(activity);
             activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
@@ -242,31 +247,66 @@ public class MainActivityTest implements AdapterView.OnItemSelectedListener{
 
             activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
 
+            user1.setStar(false);
+
             int count = activity.userViewAdapter.getItemCount();
+
+            user1.setName("a");
 
             View row = activity.usersRecyclerView.getLayoutManager().findViewByPosition(0);
 
-            TextView star1 = row.findViewById(R.id.star);
+            assertEquals(null, row);
+        });
+    }
 
-            star1.performClick();
+    @Test
+    public void favoriteStudentsTest(){
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            User user1 = new User("Luffy","",User.coursesToString( new ArrayList<Course>()), 179876, false, true, 6, "data1");
+            User user2 = new User("a","",User.coursesToString( new ArrayList<Course>()), 179876, false, false, 6, "data2");
+            activity.usersRecyclerView = activity.findViewById(R.id.users_view);
+            activity.usersLayoutManager = new LinearLayoutManager(activity);
+            activity.usersRecyclerView.setLayoutManager(activity.usersLayoutManager);
 
-            User user1 = activity.userViewAdapter.getUserAtIndex(0);
+            activity.userViewAdapter = new UsersViewAdapter(ApplicationProvider.getApplicationContext(),fellowUsers);
+
+            activity.usersRecyclerView.setAdapter(activity.userViewAdapter);
+
+            user1.setStar(false);
+
+            int count = activity.userViewAdapter.getItemCount();
+
+            user1.setName("a");
+
+            View row = activity.usersRecyclerView.getLayoutManager().findViewByPosition(0);
+
+            assertEquals(null, row);
+
+            //TextView star1 = row.findViewById(R.id.star);
+
+            //star1.performClick();
+
+            User user5 = activity.userViewAdapter.getUserAtIndex(0);
 
             ActivityScenario<FavoriteStudentActivity> scenarioF = ActivityScenario.launch(FavoriteStudentActivity.class);
             scenarioF.moveToState(Lifecycle.State.CREATED);
             scenarioF.onActivity(activityF -> {
-                User user2 = activityF.userViewAdapter.getUserAtIndex(0);
+                //User user2 = activityF.userViewAdapter.getUserAtIndex(0);
 
                 assertEquals(user1, user2);
             });
         });
-    }*/
+    }
+
 
     @After
     public void after() {
         AppDatabase.getSingletonInstance().close();
-
     }
+
+
 
     // implementation of AdapterView
     @Override
