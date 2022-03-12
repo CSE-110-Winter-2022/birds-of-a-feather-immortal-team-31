@@ -19,7 +19,7 @@ import java.util.List;
 public class SaveSessionActivity extends AppCompatActivity {
 
     private UserDatabase db;
-    private List<User> fellowUsers = new ArrayList<>();
+    private List<User> fellowUsers;
 
     protected List<Course> courses = new ArrayList<Course>();
     protected Course demo1 = new Course(2020, "spring", "CSE110", "tiny");
@@ -38,11 +38,11 @@ public class SaveSessionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_save_session);
 
         db = UserDatabase.singleton(getApplicationContext());
-
+/*
         db.usersDao().insert(user1);
         db.usersDao().insert(user2);
         db.usersDao().insert(user3);
-
+*/
         fellowUsers = getMainActivity().getFellowUsers();
         saveCurrSession();
     }
@@ -56,7 +56,7 @@ public class SaveSessionActivity extends AppCompatActivity {
 
         // getting the name given by the user to this session
         SharedPreferences preferences = getSharedPreferences("DATANAME", Context.MODE_PRIVATE);
-        String sessionName = preferences.getString("name", null);
+        String sessionName = preferences.getString("NAME", null);
 
         if (!sessionName.equals("discard"))
         {

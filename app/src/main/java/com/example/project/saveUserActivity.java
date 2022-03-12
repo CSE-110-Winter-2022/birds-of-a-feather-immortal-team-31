@@ -40,6 +40,7 @@ public class saveUserActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("DATANAME", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("NAME", "discard");
+        editor.apply();
         finish();
     }
 
@@ -60,6 +61,7 @@ public class saveUserActivity extends AppCompatActivity {
             SharedPreferences preferences = getSharedPreferences("DATANAME", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("NAME", name);
+            editor.apply();
             finish();
         }
     }

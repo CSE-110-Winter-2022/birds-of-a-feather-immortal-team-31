@@ -47,17 +47,18 @@ public class chooseListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_list);
         db = UserDatabase.singleton(getApplicationContext());
 
+        /*
         db.usersDao().insert(user1);
         db.usersDao().insert(user2);
         db.usersDao().insert(user3);
-
+*/
         userList = db.usersDao().getAll();
 
         for (User i: userList)
         {
-            if (!sessionList.contains(i.session))
+            if (!sessionList.contains(i.getSession()))
             {
-                sessionList.add(i.session);
+                sessionList.add(i.getSession());
             }
         }
 
@@ -77,11 +78,16 @@ public class chooseListActivity extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(),"Data does not exist, please enter another name and try again",Toast.LENGTH_LONG).show();
         }
+        else if (choice.equals("name"))
+        {
+            Toast.makeText(getApplicationContext(),"This is a keyword, please try again",Toast.LENGTH_LONG).show();
+        }
         else
         {
             SharedPreferences preferences = getSharedPreferences("USERCHOICE", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("choice", choice);
+            editor.apply();
             finish();
         }
     }
